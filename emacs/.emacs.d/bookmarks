@@ -1,0 +1,20 @@
+;;;; Emacs Bookmark Format Version 1 ;;;;
+;;; This format is meant to be slightly human-readable;
+;;; nevertheless, you probably don't want to edit it.
+;;; -*- End Of Bookmark File Format Version Stamp -*-
+(("index.org"
+ (filename . "~/org/index.org")
+ (front-context-string . "* Engineering Ti")
+ (rear-context-string)
+ (position . 1))
+("configuration.org"
+ (filename . "~/dotfiles/emacs/.emacs.d/configuration.org")
+ (front-context-string . ")\n#+END_SRC\n\nKil")
+ (rear-context-string . "ackage which-key")
+ (position . 6250))
+("workflow-reference.org"
+ (filename . "~/org/workflow-reference.org")
+ (front-context-string . "** Replace\n - =M")
+ (rear-context-string . "own/left/right=\n")
+ (position . 257))
+)

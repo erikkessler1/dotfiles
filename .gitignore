@@ -1,0 +1,8 @@
+**/*.cache
+
+emacs/.emacs.d/network-security.data
+
+emacs/.emacs.d/auto-save-list/
+emacs/.emacs.d/backup/
+emacs/.emacs.d/elpa/
+emacs/.emacs.d/eshell/

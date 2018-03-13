@@ -1,6 +1,7 @@
 #!/bin/sh
 
 stow bash
+stow emacs
 
 # Link .bash_profile -> .bashrc
 rm -f ~/.bash_profile

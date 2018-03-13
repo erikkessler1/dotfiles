@@ -9,7 +9,6 @@ pathmunge () {
 }
 
 pathmunge /Applications/Postgres.app/Contents/Versions/latest/bin after
-pathmunge $HOME/.rvm/bin after 
 
 export PATH
 
