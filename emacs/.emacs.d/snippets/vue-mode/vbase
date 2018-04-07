@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: vbase
+# key: vbase
+# --
+<template>
+</template>
+
+<script>
+$0
+</script>

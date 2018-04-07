@@ -74,7 +74,9 @@ there's no active region."
   :ensure t)
 
 (set-face-attribute 'default nil :height 160)
-(global-linum-mode t)
+;; (global-linum-mode t)
+;; (setq-default linum-format "%4d \u2502")
+(setq-default column-number-mode t)
 (global-hl-line-mode t)
 (scroll-bar-mode -1)
 (tool-bar-mode -1)
@@ -96,35 +98,26 @@ there's no active region."
 
 (setq frame-title-format '((:eval (projectile-project-name))))
 
-(use-package helm
-  :ensure t
-  :diminish helm-mode
-  :bind (("M-x" . helm-M-x)
-         ("C-x C-f" . helm-find-files))
-  :config
-  (helm-mode t)
-  (set 'helm-ff-auto-update-initial-value 1))
+;; (add-to-list 'load-path "~/git/swiper/")
+(add-to-list 'load-path "~/.emacs.d/resources/swiper")
+(add-to-list 'load-path "~/.emacs.d/resources/counsel-projectile")
+(setq exec-path (append exec-path '("/usr/local/bin")))
+(require 'counsel)
+(require 'counsel-projectile)
 
-(use-package helm-projectile
-  :ensure t
-  :bind 
-  ("s-p" . helm-projectile-find-file)
-  ("M-p" . helm-projectile-grep)
-  :config
-  (helm-projectile-on))
+(ivy-mode 1)
+(setq ivy-use-virtual-buffers t)
+(setq ivy-count-format "(%d/%d) ")
 
-(add-to-list 'load-path "~/.emacs.d/resources/helm-swoop")
-(require 'helm-swoop)
-(global-set-key (kbd "M-i") 'helm-swoop)
-(setq helm-swoop-use-fuzzy-match t)
+(global-set-key (kbd "C-s") 'swiper)
+(global-set-key (kbd "C-c C-r") 'ivy-resume)
+(global-set-key (kbd "<f6>") 'ivy-resume)
+(global-set-key (kbd "M-x") 'counsel-M-x)
+(global-set-key (kbd "C-x C-f") 'counsel-find-file)
 
-(use-package helm-flyspell
-  :ensure t
-  :bind
-  ("M-;" . helm-flyspell-correct))
-
-(add-hook 'enh-ruby-mode-hook
-  (lambda () (flyspell-prog-mode)))
+(define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
+(setq projectile-completion-system 'ivy)
+(counsel-projectile-mode t)
 
 (use-package ag :ensure t)
 (use-package projectile
@@ -144,6 +137,16 @@ magit-status on the project root directory. Use dired otherwise."
     (dired (projectile-project-root))))
 
 (setq projectile-switch-project-action 'projectile-use-magit-if-possible)
+
+(defun toggle-maximize-buffer () "Maximize buffer"
+  (interactive)
+  (if (= 1 (length (window-list)))
+      (jump-to-register '_) 
+    (progn
+      (window-configuration-to-register '_)
+      (delete-other-windows))))
+
+(global-set-key (kbd "<s-return>") 'toggle-maximize-buffer)
 
 (use-package avy
   :ensure t
@@ -189,12 +192,23 @@ magit-status on the project root directory. Use dired otherwise."
     (setq company-tooltip-align-annotations t
           ;; Easy navigation to candidates with M-<n>
           company-show-numbers t)
-    (setq company-dabbrev-downcase nil))
+    (setq company-dabbrev-downcase nil)
+    (setq company-idle-delay 0))
   :diminish company-mode)
 
 (use-package vue-mode
   :ensure t
   )
+
+(use-package neotree
+  :ensure t
+  :bind (("<f2>" . neotree-toggle))
+  :defer
+  :config)
+
+(add-to-list 'load-path "~/.emacs.d/resources/yasnippet")
+(require 'yasnippet)
+(yas-global-mode 1)
 
 ;;(require 'drag-stuff)
 ;;(drag-stuff-global-mode 1)
@@ -241,3 +255,6 @@ magit-status on the project root directory. Use dired otherwise."
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
+
+(add-to-list 'load-path "~/.emacs.d/resources/emacs-elixir")
+(require 'elixir-mode)

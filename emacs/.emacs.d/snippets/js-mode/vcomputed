@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: vcomputed
+# key: vcomputed
+# --
+computed: {
+          $0
+}
