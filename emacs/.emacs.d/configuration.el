@@ -48,17 +48,18 @@ there's no active region."
   )
 
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-
-(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
+(setq exec-path (append exec-path '("/usr/local/bin")))
 
 (setq ispell-program-name "/usr/local/bin/aspell")
 (add-to-list 'load-path "~/.emacs.d/resources")
 
 (require 'mouse) ;; needed for iterm2 compatibility
+
 (xterm-mouse-mode t)
 (unless window-system
   (global-set-key (kbd "<mouse-4>") 'scroll-down-line)
   (global-set-key (kbd "<mouse-5>") 'scroll-up-line))
+(setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 
 (server-start)
 
@@ -73,9 +74,12 @@ there's no active region."
 (use-package diminish
   :ensure t)
 
-(set-face-attribute 'default nil :height 160)
-;; (global-linum-mode t)
-;; (setq-default linum-format "%4d \u2502")
+(menu-bar-mode -1)
+(when window-system
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (tooltip-mode -1))
+
 (setq-default column-number-mode t)
 (global-hl-line-mode t)
 (scroll-bar-mode -1)
@@ -86,7 +90,7 @@ there's no active region."
   :config (load-theme 'zenburn t))
 
 (set-face-attribute 'region nil :background "MediumPurple1" :foreground "gray100")
-
+(set-face-attribute 'default nil :height 160)
 (add-to-list 'default-frame-alist
              '(font . "Source Code Pro-18"))
 
@@ -98,10 +102,31 @@ there's no active region."
 
 (setq frame-title-format '((:eval (projectile-project-name))))
 
-;; (add-to-list 'load-path "~/git/swiper/")
+(defun toggle-maximize-buffer () "Maximize buffer"
+  (interactive)
+  (if (= 1 (length (window-list)))
+      (jump-to-register '_) 
+    (progn
+      (window-configuration-to-register '_)
+      (delete-other-windows))))
+
+(global-set-key (kbd "<s-return>") 'toggle-maximize-buffer)
+
+(defun other-window-kill-buffer ()
+  "Kill the buffer in the other window"
+  (interactive)
+  ;; Window selection is used because point goes to a different window
+  ;; if more than 2 windows are present
+  (let ((win-curr (selected-window))
+        (win-other (next-window)))
+    (select-window win-other)
+    (kill-this-buffer)
+    (select-window win-curr)))
+(global-set-key (kbd "C-x K") 'other-window-kill-buffer)
+
 (add-to-list 'load-path "~/.emacs.d/resources/swiper")
 (add-to-list 'load-path "~/.emacs.d/resources/counsel-projectile")
-(setq exec-path (append exec-path '("/usr/local/bin")))
+
 (require 'counsel)
 (require 'counsel-projectile)
 
@@ -138,16 +163,6 @@ magit-status on the project root directory. Use dired otherwise."
 
 (setq projectile-switch-project-action 'projectile-use-magit-if-possible)
 
-(defun toggle-maximize-buffer () "Maximize buffer"
-  (interactive)
-  (if (= 1 (length (window-list)))
-      (jump-to-register '_) 
-    (progn
-      (window-configuration-to-register '_)
-      (delete-other-windows))))
-
-(global-set-key (kbd "<s-return>") 'toggle-maximize-buffer)
-
 (use-package avy
   :ensure t
   :bind (("s-." . avy-goto-word-or-subword-1)
@@ -171,14 +186,6 @@ magit-status on the project root directory. Use dired otherwise."
     (progn
       (smartparens-global-mode)
       (show-smartparens-global-mode t)))
-
-(use-package undo-tree
-  :diminish undo-tree-mode
-  :config
-  (progn
-    (global-undo-tree-mode)
-    (setq undo-tree-visualizer-timestamps t)
-    (setq undo-tree-visualizer-diff t)))
 
 (use-package company               
   :ensure t
@@ -210,28 +217,8 @@ magit-status on the project root directory. Use dired otherwise."
 (require 'yasnippet)
 (yas-global-mode 1)
 
-;;(require 'drag-stuff)
-;;(drag-stuff-global-mode 1)
-;;(drag-stuff-define-keys)
-
-;;(use-package which-key
-;;  :diminish which-key-mode
-;;  :config (which-key-mode))
-
 (use-package whitespace
   :commands (whitespace-mode))
-
-(defun other-window-kill-buffer ()
-  "Kill the buffer in the other window"
-  (interactive)
-  ;; Window selection is used because point goes to a different window
-  ;; if more than 2 windows are present
-  (let ((win-curr (selected-window))
-        (win-other (next-window)))
-    (select-window win-other)
-    (kill-this-buffer)
-    (select-window win-curr)))
-(global-set-key (kbd "C-x K") 'other-window-kill-buffer)
 
 (require 'chruby)
 (chruby "2.5.0")
