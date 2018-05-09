@@ -144,6 +144,12 @@ there's no active region."
 (setq projectile-completion-system 'ivy)
 (counsel-projectile-mode t)
 
+(use-package ace-window
+  :ensure t
+  :config
+  (global-set-key (kbd "M-o") 'ace-window)
+)
+
 (use-package ag :ensure t)
 (use-package projectile
   :ensure projectile
@@ -217,11 +223,14 @@ magit-status on the project root directory. Use dired otherwise."
 (require 'yasnippet)
 (yas-global-mode 1)
 
+(use-package aggressive-indent
+  :ensure t)
+
 (use-package whitespace
   :commands (whitespace-mode))
 
 (require 'chruby)
-(chruby "2.5.0")
+(chruby "2.5.1")
 
 (use-package rubocop
   :ensure t
@@ -245,3 +254,7 @@ magit-status on the project root directory. Use dired otherwise."
 
 (add-to-list 'load-path "~/.emacs.d/resources/emacs-elixir")
 (require 'elixir-mode)
+
+(use-package yaml-mode
+  :ensure t
+  )

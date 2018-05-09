@@ -27,7 +27,7 @@
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(package-selected-packages
    (quote
-    (neotree vue-mode flycheck which-key enh-ruby-mode robe company rspec-mode rubocop smartparens ag projectile diff-hl markdown-mode color-theme-sanityinc-tomorrow zenburn-theme helm-ebdb magit projectile-rails)))
+    (yaml-mode ace-window aggressive-indent neotree vue-mode flycheck which-key enh-ruby-mode robe company rspec-mode rubocop smartparens ag projectile diff-hl markdown-mode color-theme-sanityinc-tomorrow zenburn-theme helm-ebdb magit projectile-rails)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(standard-indent 2))
 (custom-set-faces
@@ -36,3 +36,4 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(region ((t (:background "MediumPurple1" :foreground "gray100")))))
+(put 'dired-find-alternate-file 'disabled nil)
