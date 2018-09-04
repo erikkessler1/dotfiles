@@ -9,6 +9,7 @@ pathmunge () {
 }
 
 pathmunge /Applications/Postgres.app/Contents/Versions/latest/bin after
+pathmunge "$HOME/.cargo/bin"
 
 export PATH
 

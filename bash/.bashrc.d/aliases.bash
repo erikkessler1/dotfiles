@@ -6,5 +6,8 @@ alias myip="ifconfig wlan0 | grep 'inet ' | cut --delimiter=' ' -f12 | sed s/add
 alias em="/usr/local/Cellar/emacs-plus/25.3/bin/emacsclient"
 alias preview="fzf --preview 'bat --color \"always\" {}'"
 
+alias zoo="$KAFKA_DIR/bin/zookeeper-server-start.sh $KAFKA_DIR/config/zookeeper.properties"
+alias kafka="$KAFKA_DIR/bin/kafka-server-start.sh $KAFKA_DIR/config/server.properties"
+
 alias pulse="kubectl --namespace pulse"
 alias btf="kubectl --namespace below-the-fold"
