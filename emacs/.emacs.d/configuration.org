@@ -352,3 +352,11 @@ Whitespace
 
    #+RESULTS:
 
+** Web
+   #+BEGIN_SRC emacs-lisp :results none
+     (use-package web-mode
+       :ensure t
+       :defer t)
+
+     (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+   #+END_SRC

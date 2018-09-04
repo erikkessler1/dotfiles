@@ -222,6 +222,7 @@ magit-status on the project root directory. Use dired otherwise."
 (add-to-list 'load-path "~/.emacs.d/resources/yasnippet")
 (require 'yasnippet)
 (yas-global-mode 1)
+(define-key yas-minor-mode-map (kbd "C-c y") yas-maybe-expand)
 
 (use-package aggressive-indent
   :ensure t)
@@ -258,3 +259,9 @@ magit-status on the project root directory. Use dired otherwise."
 (use-package yaml-mode
   :ensure t
   )
+
+(use-package web-mode
+  :ensure t
+  :defer t)
+
+(add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
