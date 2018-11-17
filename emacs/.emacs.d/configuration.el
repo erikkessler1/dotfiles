@@ -53,6 +53,9 @@ there's no active region."
 (setq ispell-program-name "/usr/local/bin/aspell")
 (add-to-list 'load-path "~/.emacs.d/resources")
 
+(setq backup-directory-alist
+      `(("." . ,(concat user-emacs-directory "backups"))))
+
 (require 'mouse) ;; needed for iterm2 compatibility
 
 (xterm-mouse-mode t)
