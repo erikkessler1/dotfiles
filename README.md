@@ -1,6 +1,6 @@
 ### My dotfiles
 
-My congigurations for various tools.
+Configuration for various tools.
 
 ### Installation
 
