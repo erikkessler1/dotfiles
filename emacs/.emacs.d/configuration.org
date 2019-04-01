@@ -1,64 +1,220 @@
-* Sensible Defaults
-#+BEGIN_SRC emacs-lisp
-  (defun sensible-defaults/comment-or-uncomment-region-or-line ()
-    "Comments or uncomments the region or the current line if
-  there's no active region."
-    (interactive)
-    (let (beg end)
-      (if (region-active-p)
-          (setq beg (region-beginning) end (region-end))
-        (setq beg (line-beginning-position) end (line-end-position)))
-      (comment-or-uncomment-region beg end)))
+#+TITLE: Emacs Configuration
+#+AUTHOR: Erik Kessler
 
-  (setq gc-cons-threshold 50000000) ;; GC limit
-  (setq sentence-end-double-space nil)
-  (add-hook 'before-save-hook
-              (lambda ()
-                (when buffer-file-name
-                  (let ((dir (file-name-directory buffer-file-name)))
-                    (when (and (not (file-exists-p dir))
-                               (y-or-n-p (format "Directory %s does not exist. Create it?" dir)))
-                      (make-directory dir t))))))
-  (delete-selection-mode t) ;; delete selected text when type something else
-  (setq require-final-newline t) ;; add newlines to files
-  (setq confirm-kill-emacs 'y-or-n-p)
+#+PROPERTY: header-args :results none
+
+* Initial Setup
+
+** Details
+
+*** Lexical binding
+Make sure the tangled file starts with this.
+#+BEGIN_SRC emacs-lisp
+  ;;; -*- lexical-binding: t -*-
+#+END_SRC
+
+** Resource Management
+
+*** GC limit
+Use a higher threshold.
+#+BEGIN_SRC emacs-lisp
+  (setq gc-cons-threshold 50000000)
+#+END_SRC
+
+** Package Management
+
+*** [[https://github.com/jwiegley/use-package][use-package]]
+#+BEGIN_QUOTE
+A use-package declaration for simplifying your .emacs
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (package-initialize)
+  (add-to-list 'package-archives
+               '("melpa" . "https://melpa.org/packages/")
+               '("marmalade" . "http://marmalade-repo.org/packages/"))
+  (require 'package)
+  (unless (package-installed-p 'use-package) 
+    (package-refresh-contents) 
+    (package-install 'use-package))
+  (eval-when-compile (require 'use-package))
+#+END_SRC
+**** Extensions
+Quiet things on the mode-line.
+#+BEGIN_SRC emacs-lisp
+  (use-package diminish
+    :ensure t)
+#+END_SRC
+Ensure system binaries exist.
+#+BEGIN_SRC emacs-lisp
+  (use-package use-package-ensure-system-package
+    :ensure t)
+#+END_SRC
+
+** Startup
+
+*** Initial messages
+Make things a little quieter.
+#+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
   (setq initial-scratch-message nil)
-
-  (setq-default dired-listing-switches "-alh")
   (fset 'yes-or-no-p 'y-or-n-p)
-  (global-font-lock-mode t) ;; syntax highlight whenever possible
-  (global-auto-revert-mode t) ;; refresh files when changed
-  (show-paren-mode t)
-  (setq show-paren-delay 0.0)
-  (setq ns-pop-up-frames nil) ;; opening files from finder opens in new buffer
-  (global-set-key (kbd "M-;") 'sensible-defaults/comment-or-uncomment-region-or-line)
+#+END_SRC
 
+*** Quitting Emacs
+Make sure we want to quit.
+#+BEGIN_SRC emacs-lisp
+  (setq confirm-kill-emacs 'y-or-n-p)
+#+END_SRC
+
+*** Paths
+Include user binaries.
+#+BEGIN_SRC emacs-lisp
+  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
+  (setq exec-path (append exec-path '("/usr/local/bin")))
+#+END_SRC
+
+Load the ~resources~ directory.
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path (concat user-emacs-directory "resources"))
+#+END_SRC
+
+*** Backups
+Keep them in a separate directory.
+#+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups")))
+        backup-by-copying t
+        version-control t ; use version numbers on backups
+        delete-old-versions t 
+        kept-new-versions 20
+        kept-old-versions 5)
+#+END_SRC
+
+*** Emacs Server
+Start the server.
+#+BEGIN_SRC emacs-lisp
+  (server-start)
+#+END_SRC
+
+*** Unwanted keybindings
+Unset some bindings.
+#+BEGIN_SRC emacs-lisp
+  (global-unset-key (kbd "C-x C-b"))
+#+END_SRC
+
+* Core Editor
+
+** Appearance
+
+*** Bars
+Hide the bars and tool-tips.
+#+BEGIN_SRC emacs-lisp
   (menu-bar-mode -1)
   (when window-system
     (tool-bar-mode -1)
     (scroll-bar-mode -1)
     (tooltip-mode -1))
-
-  (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
-    backup-by-copying t    ; Don't delink hardlinks
-    version-control t      ; Use version numbers on backups
-    delete-old-versions t  ; Automatically delete excess backups
-    kept-new-versions 20   ; how many of the newest versions to keep
-    kept-old-versions 5    ; and how many of the old
-    )
-
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-  (setq exec-path (append exec-path '("/usr/local/bin")))
-
-  (setq ispell-program-name "/usr/local/bin/aspell")
-  (add-to-list 'load-path "~/.emacs.d/resources")
-
-  (setq backup-directory-alist
-        `(("." . ,(concat user-emacs-directory "backups"))))
 #+END_SRC
 
-Mouse configuration
+*** Global font locking
+Syntax highlight whenever possible.
+#+BEGIN_SRC emacs-lisp
+  (global-font-lock-mode t)
+#+END_SRC
+
+*** Parens
+Show paren-pairs right away.
+#+BEGIN_SRC emacs-lisp
+  (show-paren-mode t)
+  (setq show-paren-delay 0.0)
+#+END_SRC
+
+*** Column numbers
+Show the column number.
+#+BEGIN_SRC emacs-lisp
+  (setq-default column-number-mode t)
+#+END_SRC
+
+*** Line highlighting
+Highlight the current line.
+#+BEGIN_SRC emacs-lisp
+  (global-hl-line-mode t)
+#+END_SRC
+
+*** Diff highlighting
+#+BEGIN_SRC emacs-lisp
+  (use-package diff-hl
+    :ensure t
+    :config 
+    (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
+    (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
+#+END_SRC
+
+*** Theme
+Use ~zenburn-theme~.
+#+BEGIN_SRC emacs-lisp
+  (use-package zenburn-theme
+    :ensure t
+    :config (load-theme 'zenburn t))
+#+END_SRC
+
+*** Font
+Set the font, make it bigger, and make regions pop.
+#+BEGIN_SRC emacs-lisp
+  (set-face-attribute 'region nil :background "MediumPurple1" :foreground "gray100")
+  (set-face-attribute 'default nil :height 160)
+  (add-to-list 'default-frame-alist
+               '(font . "Source Code Pro-18"))
+#+END_SRC
+
+** Behavior
+
+*** Sentences
+Use one space between sentences.
+#+BEGIN_SRC emacs-lisp
+  (setq sentence-end-double-space nil)
+#+END_SRC
+
+*** Overwrite selection
+Delete the highlighted region when start typing.
+#+BEGIN_SRC emacs-lisp
+  (delete-selection-mode t)
+#+END_SRC
+
+*** Final newlines
+Add newlines to the end of files.
+#+BEGIN_SRC emacs-lisp
+  (setq require-final-newline t)
+#+END_SRC
+
+*** Refreshing files
+Refresh files when they change.
+#+BEGIN_SRC emacs-lisp
+  (global-auto-revert-mode t)
+#+END_SRC
+
+*** Opening files from Finder
+Use a new buffer.
+#+BEGIN_SRC emacs-lisp
+  (setq ns-pop-up-frames nil)
+#+END_SRC
+
+*** Saving new directories
+Prompt to create new directories.
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook
+            (lambda ()
+              (when buffer-file-name
+                (let ((dir (file-name-directory buffer-file-name)))
+                  (when (and (not (file-exists-p dir))
+                             (y-or-n-p (format "Directory %s does not exist. Create it?" dir)))
+                    (make-directory dir t))))))
+#+END_SRC
+
+** Navigation
+
+*** Mouse configuration
+Make the mouse work in iterm2.
 #+BEGIN_SRC emacs-lisp
   (require 'mouse) ;; needed for iterm2 compatibility
 
@@ -69,73 +225,90 @@ Mouse configuration
   (setq mouse-wheel-scroll-amount '(1 ((shift) . 1)))
 #+END_SRC
 
-Start the server
+*** [[https://github.com/abo-abo/avy][avy]]
+#+BEGIN_QUOTE
+Tree-based completion.
+#+END_QUOTE
+
 #+BEGIN_SRC emacs-lisp
-  (server-start)
-#+END_SRC
-
-* Package Management
-
-Bootstrap =use-package=
-#+BEGIN_SRC emacs-lisp
-  (package-initialize)
-  (add-to-list 'package-archives
-               '("melpa" . "https://melpa.org/packages/")
-               '("marmalade" . "http://marmalade-repo.org/packages/"))
-  (require 'package)
-  (unless (package-installed-p 'use-package) (package-refresh-contents) (package-install 'use-package))
-  (eval-when-compile (require 'use-package))
-
-  (use-package diminish
-    :ensure t)
-#+END_SRC
-
-* Appearence
-Window
-#+BEGIN_SRC emacs-lisp :results none
-  (menu-bar-mode -1)
-  (when window-system
-    (tool-bar-mode -1)
-    (scroll-bar-mode -1)
-    (tooltip-mode -1))
-#+END_SRC
-
-Theme, font, and other text stuff
-#+BEGIN_SRC emacs-lisp :results none
-  (setq-default column-number-mode t)
-  (global-hl-line-mode t)
-  (scroll-bar-mode -1)
-  (tool-bar-mode -1)
-
-  (use-package zenburn-theme
+  (use-package avy
     :ensure t
-    :config (load-theme 'zenburn t))
-
-  (set-face-attribute 'region nil :background "MediumPurple1" :foreground "gray100")
-  (set-face-attribute 'default nil :height 160)
-  (add-to-list 'default-frame-alist
-               '(font . "Source Code Pro-18"))
+    :bind (("s-." . avy-goto-word-or-subword-1)
+           ("s-," . avy-goto-char))
+    :custom (avy-background t "darken the background"))
 #+END_SRC
 
-Highligh uncommitted changes
-#+BEGIN_SRC emacs-lisp :results none
-  (use-package diff-hl
-    :ensure t
-    :config 
-    (add-hook 'prog-mode-hook 'turn-on-diff-hl-mode)
-    (add-hook 'vc-dir-mode-hook 'turn-on-diff-hl-mode))
-#+END_SRC
+** Completion
 
-Use the projectile project as the title
+*** [[https://github.com/abo-abo/swiper][ivy, counsel, & swiper]]
+#+BEGIN_QUOTE
+Ivy, a generic completion mechanism for Emacs.
+
+Counsel, a collection of Ivy-enhanced versions of common Emacs
+commands.
+
+Swiper, an Ivy-enhanced alternative to isearch.
+#+END_QUOTE
+
 #+BEGIN_SRC emacs-lisp
-(setq frame-title-format '((:eval (projectile-project-name))))
+  (use-package ivy
+    :after counsel
+    :diminish
+    :bind (("C-c Cr" . ivy-resume)
+           ("C-x B" . ivy-switch-buffer-other-window))
+    :config (ivy-mode t)
+    :custom ((ivy-count-format "(%d/%d) ")
+             (ivy-use-virtual-buffers t)))
+
+  (use-package counsel
+    :ensure t
+    :diminish
+    :config (counsel-mode t))
+
+  (use-package swiper
+    :after counsel
+    :bind (("C-s" . swiper)))
 #+END_SRC
 
-* Buffer/Frame Management
+** Selection
 
-Maximize buffer
-#+BEGIN_SRC emacs-lisp :results none
-  (defun toggle-maximize-buffer () "Maximize buffer"
+*** [[https://github.com/magnars/expand-region.el][expand-region]]
+#+BEGIN_QUOTE
+Emacs extension to increase selected region by semantic units.
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+    :ensure t
+    :bind ("C-=" . er/expand-region))
+#+END_SRC
+** Searching
+
+*** [[https://github.com/Wilfred/ag.el][ag]]
+#+BEGIN_QUOTE
+A front-end for ag ('the silver searcher')
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+    (use-package ag 
+      :ensure t
+      :ensure-system-package ag)
+#+END_SRC
+* Buffers & files
+
+** Directories
+
+*** Dired switches
+#+BEGIN_SRC emacs-lisp
+  (setq-default dired-listing-switches "-alh")
+#+END_SRC
+
+** Buffers
+
+*** Maximizing the current buffer
+#+BEGIN_SRC emacs-lisp
+  (defun ek-toggle-maximize-buffer ()
+    "Maximize buffer or return to previous configuration"
     (interactive)
     (if (= 1 (length (window-list)))
         (jump-to-register '_) 
@@ -143,223 +316,298 @@ Maximize buffer
         (window-configuration-to-register '_)
         (delete-other-windows))))
 
-  (global-set-key (kbd "<s-return>") 'toggle-maximize-buffer)
+  (global-set-key (kbd "<s-return>") 'ek-toggle-maximize-buffer)
 #+END_SRC
 
-Kill the other buffer.
+*** Copying the current filename
 #+BEGIN_SRC emacs-lisp
-(defun other-window-kill-buffer ()
-  "Kill the buffer in the other window"
-  (interactive)
-  ;; Window selection is used because point goes to a different window
-  ;; if more than 2 windows are present
-  (let ((win-curr (selected-window))
-        (win-other (next-window)))
-    (select-window win-other)
-    (kill-this-buffer)
-    (select-window win-curr)))
-(global-set-key (kbd "C-x K") 'other-window-kill-buffer)
+  (defun ek-copy-file-name ()
+    "Copy the current filename to the clipboard"
+    (interactive)
+    (let ((filename (if (equal major-mode 'dired-mode)
+                        default-directory
+                      (buffer-file-name))))
+      (when filename
+        (kill-new filename)
+        (message "Copied buffer file name '%s' to the clipboard." filename))))
 #+END_SRC
 
-* Core
-** Ivy
-#+BEGIN_SRC emacs-lisp :results none
-  (add-to-list 'load-path "~/.emacs.d/resources/swiper")
-  (add-to-list 'load-path "~/.emacs.d/resources/counsel-projectile")
+** Windows
 
-  (require 'counsel)
-  (require 'counsel-projectile)
+*** [[https://github.com/abo-abo/ace-window][ace-window]]
+#+BEGIN_QUOTE
+Quickly switch windows.
+#+END_QUOTE
 
-  (ivy-mode 1)
-  (setq ivy-use-virtual-buffers t)
-  (setq ivy-count-format "(%d/%d) ")
-
-  (global-set-key (kbd "C-s") 'swiper)
-  (global-set-key (kbd "C-c C-r") 'ivy-resume)
-  (global-set-key (kbd "<f6>") 'ivy-resume)
-  (global-set-key (kbd "M-x") 'counsel-M-x)
-  (global-set-key (kbd "C-x C-f") 'counsel-find-file)
-
-  (define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
-  (setq projectile-completion-system 'ivy)
-  (counsel-projectile-mode t)
-#+END_SRC
-
-** Ace
-#+BEGIN_SRC emacs-lisp :results none
+#+BEGIN_SRC emacs-lisp
   (use-package ace-window
     :ensure t
-    :config
-    (global-set-key (kbd "M-o") 'ace-window)
-  )
+    :bind ("M-o" . ace-window)
+    :custom (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+END_SRC
-** Projectile
-#+BEGIN_SRC emacs-lisp
-  (use-package ag :ensure t)
-  (use-package projectile
-    :ensure projectile
-    :config 
-    (projectile-global-mode t)
-    (setq projectile-enable-caching t)
-    :diminish projectile-mode)
-#+END_SRC
+* General Tools
+
+** Notes
+
+*** [[http://orgmode.org][org]]
+#+BEGIN_QUOTE
+Outline-based notes management and organizer.
+#+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp
-  (defun projectile-use-magit-if-possible ()
-    "If the project being switched to is a git repository, invoke
-  magit-status on the project root directory. Use dired otherwise."
-    (interactive)
-    (if (and (executable-find "git")
-             (eq (projectile-project-vcs) 'git))
-        (magit-status (projectile-project-root))
-      (dired (projectile-project-root))))
-
-  (setq projectile-switch-project-action 'projectile-use-magit-if-possible)
-#+END_SRC
-   
-** Avy
-Use =avy= for jumping to places.
-#+BEGIN_SRC emacs-lisp
-(use-package avy
-  :ensure t
-  :bind (("s-." . avy-goto-word-or-subword-1)
-         ("s-," . avy-goto-char))
-  :config
-  (setq avy-background t))
+  (setq org-src-fontify-natively t)
+  (setq org-src-tab-acts-natively t)
 #+END_SRC
 
-** Org
+* Development
 
-#+BEGIN_SRC emacs-lisp
-(setq org-src-fontify-natively t)
-(setq org-src-tab-acts-natively t)
-#+END_SRC
+** Version Control
 
-** Magit
-Bring up the status with =C-x g=.
+*** [[https://github.com/magit/magit][magit]]
+#+BEGIN_QUOTE
+A Git porcelain inside Emacs
+#+END_QUOTE
+
 #+BEGIN_SRC emacs-lisp
   (use-package magit
     :ensure t
     :bind ("C-x g" . magit-status)
-
-    :config
-    (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
+    :config (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
 #+END_SRC
+** Comments
 
-#+RESULTS:
-: magit-status
-
-** Smartparens
+*** Toggling comments
 #+BEGIN_SRC emacs-lisp
-  (use-package smartparens-config
-      :ensure smartparens
-      :config
-      (progn
-        (smartparens-global-mode)
-        (show-smartparens-global-mode t)))
-
+  (defun ek-comment-or-uncomment-region-or-line ()
+    "Comments or uncomments the region or the current line if
+    there's no active region."
+    (interactive)
+    (let (beg end)
+      (if (region-active-p)
+          (setq beg (region-beginning) end (region-end))
+        (setq beg (line-beginning-position) end (line-end-position)))
+      (comment-or-uncomment-region beg end)))
+  (global-set-key (kbd "M-;") 'ek-comment-or-uncomment-region-or-line)
 #+END_SRC
-** Company
+
+** Indentation
+
+*** [[https://github.com/Malabarba/aggressive-indent-mode][agressive-indent]]
+#+BEGIN_QUOTE
+Emacs minor mode that keeps your code always indented. More reliable
+than electric-indent-mode.
+#+END_QUOTE
+
 #+BEGIN_SRC emacs-lisp
-  (use-package company               
-    :ensure t
-    :defer t
-    :init (global-company-mode)
-    :config
-    (progn
-      ;; Use Company for completion
-      (bind-key [remap completion-at-point] #'company-complete company-mode-map)
-
-      (setq company-tooltip-align-annotations t
-            ;; Easy navigation to candidates with M-<n>
-            company-show-numbers t)
-      (setq company-dabbrev-downcase nil)
-      (setq company-idle-delay 0))
-    :diminish company-mode)
-#+END_SRC
-   
-** Vue
-#+BEGIN_SRC emacs-lisp :results none
-  (use-package vue-mode
-    :ensure t
-    )
-#+END_SRC
-** Neotree
-#+BEGIN_SRC emacs-lisp :results none
-  (use-package neotree
-    :ensure t
-    :bind (("<f2>" . neotree-toggle))
-    :defer
-    :config)
-#+END_SRC
-** Yasnippet
-#+BEGIN_SRC emacs-lisp :results none
-  (add-to-list 'load-path "~/.emacs.d/resources/yasnippet")
-  (require 'yasnippet)
-  (yas-global-mode 1)
-  (define-key yas-minor-mode-map (kbd "C-c y") yas-maybe-expand)
-#+END_SRC
-** AgressiveIndent
-#+BEGIN_SRC emacs-lisp :results none
   (use-package aggressive-indent
     :ensure t)
 #+END_SRC
-** Various
 
-Whitespace
+** Parenthesis
+
+*** [[https://github.com/Fuco1/smartparens][smartparens]]
+#+BEGIN_QUOTE
+Smartparens is a minor mode for dealing with pairs in Emacs.
+#+END_QUOTE
+
 #+BEGIN_SRC emacs-lisp
-  (use-package whitespace
-    :commands (whitespace-mode))
+  (use-package smartparens
+    :config 
+    (smartparens-global-mode)
+    (show-smartparens-global-mode t)
+    :bind (("C-]" . sp-select-next-thing-exchange)
+           ("C-c s r" . sp-rewrap-sexp)
+           ("C-M-u" . sp-up-sexp)
+           ("C-M-d" . sp-down-sexp)))
+
+  (use-package smartparens-config 
+    :ensure smartparens)
 #+END_SRC
 
-* Languages
+** Auto-completion
+
+*** [[https://company-mode.github.io/][company]]
+#+BEGIN_QUOTE
+Modular in-buffer completion framework for Emacs.
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company        
+    :ensure t
+    :diminish company-mode
+    :init (global-company-mode)
+    :bind ([remap completion-at-point] . company-complete)
+    :custom ((company-tooltip-align-annotations t)
+             (company-show-numbers t "Easy candidate navigation with M-<n>")
+             (company-idle-delay 0 "Show right away")
+             (company-dabbrev-downcase nil "Don't downcase stuff")))
+#+END_SRC
+** Project management
+
+*** [[https://github.com/bbatsov/projectile][projectile]]
+#+BEGIN_QUOTE
+Manage and navigate projects in Emacs easily
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package projectile
+    :ensure projectile
+    :diminish projectile-mode
+    :custom ((projectile-enable-caching t)
+             (projectile-keymap-prefix (kbd "C-c p"))
+             (projectile-completion-system 'ivy))
+    :config 
+    (projectile-global-mode t))
+
+  (use-package counsel-projectile
+    :ensure t
+    :config
+    (counsel-projectile-mode t))
+#+END_SRC
+
+*** [[http://www.flycheck.org][flycheck]]
+#+BEGIN_QUOTE
+On-the-fly syntax checking
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :init (global-flycheck-mode))
+#+END_SRC
+
+* Languages and Frameworks
+
 ** Ruby
 
-#+BEGIN_SRC emacs-lisp :results none
+*** General
+#+BEGIN_SRC emacs-lisp
+  (use-package ruby-mode
+    :ensure t
+    :custom ((ruby-insert-encoding-magic-comment nil))
+    :config
+    (add-hook 'ruby-mode-hook 'subword-mode))
+#+END_SRC
+
+*** [[https://github.com/plexus/chruby.el][chruby]]
+#+BEGIN_QUOTE
+Emacs integration for chruby
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
   (require 'chruby)
   (chruby "2.5.1")
+  (add-hook 'projectile-after-switch-project-hook 'chruby-use-corresponding)
+#+END_SRC
 
+*** [[https://rubocop.readthedocs.io/en/latest/][rubocop]]
+#+BEGIN_QUOTE
+RuboCop is a Ruby static code analyzer and code formatter
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
   (use-package rubocop
     :ensure t
     :defer t
     :init (add-hook 'ruby-mode-hook 'rubocop-mode))
+#+END_SRC
 
+Ensure we use the bundled version of RuboCop and add our standard
+configuration if there isn't any.
+#+BEGIN_SRC emacs-lisp
+  (defun ek-add-bundle (command)
+    (let ((exe (car command))
+          (opts (cdr command)))
+      (if (string-match "rubocop\\'" exe)
+          (if (member "--config" opts)
+              (append '("bundle" "exec" "rubocop") opts)
+            (cons exe (append opts '("--config" "/Users/ekessler/.my_rubocop.yml"))))
+        command)))
+
+  (setq flycheck-command-wrapper-function (lambda (command)
+                                            (let ((modified-command (ek-add-bundle command))
+                                                  (inhibit-message t))
+                                              (progn
+                                                (message "Original Command: %s" command)
+                                                (message "Modified Command: %s" modified-command)
+                                                modified-command))))
+#+END_SRC
+
+*** [[https://rspec.info/][rspec]]
+#+BEGIN_QUOTE
+Behaviour Driven Development for Ruby.
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
   (use-package rspec-mode
     :ensure t
-    :defer t
     :init 
     (add-hook 'ruby-mode-hook 'rspec-mode)
     (add-hook 'projectile-rails-mode 'rspec-mode))
+#+END_SRC
 
+*** [[https://rubyonrails.org/][rails]]
+#+BEGIN_QUOTE
+A web-application framework that includes everything needed to create
+database-backed web applications.
+#+END_QUOTE
+
+Projectile integration
+#+BEGIN_SRC emacs-lisp
   (use-package projectile-rails
     :ensure t
     :init (projectile-rails-global-mode))
-
-  (use-package flycheck
-    :ensure t
-    :init (global-flycheck-mode))
-
 #+END_SRC
-
-** Elixir
-#+BEGIN_SRC emacs-lisp :results none
-  (add-to-list 'load-path "~/.emacs.d/resources/emacs-elixir")
-  (require 'elixir-mode)
-#+END_SRC
-** YAML
-   #+BEGIN_SRC emacs-lisp
-     (use-package yaml-mode
-       :ensure t
-       )
-   #+END_SRC
-
-   #+RESULTS:
 
 ** Web
-   #+BEGIN_SRC emacs-lisp :results none
-     (use-package web-mode
-       :ensure t
-       :defer t)
 
-     (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
-   #+END_SRC
+*** General
+#+BEGIN_SRC emacs-lisp
+  (use-package web-mode
+    :ensure t
+    :defer t)
+
+  (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
+#+END_SRC
+
+** Markdown
+
+*** [[https://github.com/mola-T/flymd][flymd]]
+#+BEGIN_QUOTE
+Emacs on the fly markdown preview
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flymd 
+    :ensure t)
+
+  (defun my-flymd-browser-function (url)
+    (let ((process-environment (browse-url-process-environment)))
+      (apply 'start-process
+             (concat "firefox " url)
+             nil
+             "/usr/bin/open"
+             (list "-a" "firefox" url))))
+
+  (setq flymd-browser-open-function 'my-flymd-browser-function)
+#+END_SRC
+
+** YAML
+
+*** General
+#+BEGIN_SRC emacs-lisp
+  (use-package yaml-mode
+    :ensure t)
+#+END_SRC
+
+** Clojure
+
+*** General
+#+BEGIN_SRC emacs-lisp
+  (use-package clojure-mode
+    :ensure t
+    :config
+    (add-hook 'clojure-mode-hook 'aggressive-indent-mode)
+    (add-hook 'clojure-mode-hook 'smartparens-strict-mode)
+    (add-hook 'clojure-mode-hook 'subword-mode))
+#+END_SRC
