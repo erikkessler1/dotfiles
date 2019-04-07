@@ -19,6 +19,12 @@
 (use-package use-package-ensure-system-package
   :ensure t)
 
+(use-package use-package-chords
+  :ensure t
+  :custom ((key-chord-two-keys-delay .05)
+           (key-chord-one-key-delay .18))
+  :config (key-chord-mode 1))
+
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
 (fset 'yes-or-no-p 'y-or-n-p)
@@ -99,8 +105,8 @@
 
 (use-package avy
   :ensure t
-  :bind (("C-;" . avy-goto-word-or-subword-1)
-         ("C-:" . avy-goto-char-timer))
+  :chords (("jj" . avy-goto-word-or-subword-1)
+          ("jk" . avy-goto-char-timer))
   :custom (avy-background t "darken the background"))
 
 (use-package ivy
@@ -120,6 +126,7 @@
 (use-package counsel
   :ensure t
   :diminish
+  :chords ("xx" . counsel-M-x)
   :config (counsel-mode t))
 
 (use-package swiper
@@ -127,6 +134,9 @@
   :bind (("C-s" . swiper)))
 
 (use-package flx
+  :ensure t)
+
+(use-package smex
   :ensure t)
 
 (use-package expand-region
@@ -163,6 +173,7 @@
 (use-package ace-window
   :ensure t
   :bind ("M-o" . ace-window)
+  :chords (" o" . ace-window)
   :custom (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
 (setq org-src-fontify-natively t)
@@ -212,6 +223,8 @@
 (use-package projectile
   :ensure projectile
   :diminish projectile-mode
+  :chords (("pp" . projectile-switch-project)
+          ("pf" . projectile-find-file))
   :custom ((projectile-enable-caching t)
            (projectile-keymap-prefix (kbd "C-c p"))
            (projectile-completion-system 'ivy))

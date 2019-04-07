@@ -50,7 +50,14 @@ Ensure system binaries exist.
   (use-package use-package-ensure-system-package
     :ensure t)
 #+END_SRC
-
+Key-chords
+#+BEGIN_SRC emacs-lisp
+  (use-package use-package-chords
+    :ensure t
+    :custom ((key-chord-two-keys-delay .05)
+             (key-chord-one-key-delay .18))
+    :config (key-chord-mode 1))
+#+END_SRC
 ** Startup
 
 *** Initial messages
@@ -101,7 +108,6 @@ Unset some bindings.
 #+BEGIN_SRC emacs-lisp
   (global-unset-key (kbd "C-x C-b"))
 #+END_SRC
-
 * Core Editor
 
 ** Appearance
@@ -233,8 +239,8 @@ Tree-based completion.
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :ensure t
-    :bind (("C-;" . avy-goto-word-or-subword-1)
-           ("C-:" . avy-goto-char-timer))
+    :chords (("jj" . avy-goto-word-or-subword-1)
+            ("jk" . avy-goto-char-timer))
     :custom (avy-background t "darken the background"))
 #+END_SRC
 
@@ -268,6 +274,7 @@ Swiper, an Ivy-enhanced alternative to isearch.
   (use-package counsel
     :ensure t
     :diminish
+    :chords ("xx" . counsel-M-x)
     :config (counsel-mode t))
 
   (use-package swiper
@@ -366,6 +373,7 @@ Quickly switch windows.
   (use-package ace-window
     :ensure t
     :bind ("M-o" . ace-window)
+    :chords (" o" . ace-window)
     :custom (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+END_SRC
 * General Tools
@@ -476,6 +484,8 @@ Manage and navigate projects in Emacs easily
   (use-package projectile
     :ensure projectile
     :diminish projectile-mode
+    :chords (("pp" . projectile-switch-project)
+            ("pf" . projectile-find-file))
     :custom ((projectile-enable-caching t)
              (projectile-keymap-prefix (kbd "C-c p"))
              (projectile-completion-system 'ivy))
