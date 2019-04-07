@@ -99,8 +99,8 @@
 
 (use-package avy
   :ensure t
-  :bind (("s-." . avy-goto-word-or-subword-1)
-         ("s-," . avy-goto-char))
+  :bind (("C-;" . avy-goto-word-or-subword-1)
+         ("C-:" . avy-goto-char-timer))
   :custom (avy-background t "darken the background"))
 
 (use-package ivy
@@ -108,9 +108,14 @@
   :diminish
   :bind (("C-c Cr" . ivy-resume)
          ("C-x B" . ivy-switch-buffer-other-window))
-  :config (ivy-mode t)
   :custom ((ivy-count-format "(%d/%d) ")
-           (ivy-use-virtual-buffers t)))
+           (ivy-use-virtual-buffers t))
+  :config
+  (ivy-mode t)
+  (define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
+  (setq ivy-re-builders-alist
+        '((swiper . ivy--regex-plus)
+          (t . ivy--regex-fuzzy))))
 
 (use-package counsel
   :ensure t
@@ -120,6 +125,9 @@
 (use-package swiper
   :after counsel
   :bind (("C-s" . swiper)))
+
+(use-package flx
+  :ensure t)
 
 (use-package expand-region
   :ensure t
@@ -208,7 +216,8 @@
            (projectile-keymap-prefix (kbd "C-c p"))
            (projectile-completion-system 'ivy))
   :config 
-  (projectile-global-mode t))
+  (projectile-global-mode t)
+  (setq frame-title-format '((:eval (projectile-project-name)))))
 
 (use-package counsel-projectile
   :ensure t

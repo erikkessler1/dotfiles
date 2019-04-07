@@ -233,8 +233,8 @@ Tree-based completion.
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :ensure t
-    :bind (("s-." . avy-goto-word-or-subword-1)
-           ("s-," . avy-goto-char))
+    :bind (("C-;" . avy-goto-word-or-subword-1)
+           ("C-:" . avy-goto-char-timer))
     :custom (avy-background t "darken the background"))
 #+END_SRC
 
@@ -256,9 +256,14 @@ Swiper, an Ivy-enhanced alternative to isearch.
     :diminish
     :bind (("C-c Cr" . ivy-resume)
            ("C-x B" . ivy-switch-buffer-other-window))
-    :config (ivy-mode t)
     :custom ((ivy-count-format "(%d/%d) ")
-             (ivy-use-virtual-buffers t)))
+             (ivy-use-virtual-buffers t))
+    :config
+    (ivy-mode t)
+    (define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
+    (setq ivy-re-builders-alist
+          '((swiper . ivy--regex-plus)
+            (t . ivy--regex-fuzzy))))
 
   (use-package counsel
     :ensure t
@@ -270,6 +275,24 @@ Swiper, an Ivy-enhanced alternative to isearch.
     :bind (("C-s" . swiper)))
 #+END_SRC
 
+*** [[https://github.com/lewang/flx][flx]]
+#+BEGIN_QUOTE
+Fuzzy matching for Emacs ... a la Sublime Text.
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+    (use-package flx
+      :ensure t)
+#+END_SRC
+*** [[https://github.com/nonsequitur/smex][smex]]
+#+BEGIN_SRC quote
+A smart M-x enhancement for Emacs.
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smex
+    :ensure t)
+#+END_SRC
 ** Selection
 
 *** [[https://github.com/magnars/expand-region.el][expand-region]]
@@ -457,7 +480,8 @@ Manage and navigate projects in Emacs easily
              (projectile-keymap-prefix (kbd "C-c p"))
              (projectile-completion-system 'ivy))
     :config 
-    (projectile-global-mode t))
+    (projectile-global-mode t)
+    (setq frame-title-format '((:eval (projectile-project-name)))))
 
   (use-package counsel-projectile
     :ensure t
