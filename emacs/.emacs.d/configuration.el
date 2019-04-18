@@ -179,6 +179,7 @@
 
 (setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
+(define-key org-mode-map (kbd "C-c .") 'org-time-stamp-inactive)
 
 (use-package magit
   :ensure t
@@ -352,6 +353,9 @@
 (setq flymd-browser-open-function 'my-flymd-browser-function)
 
 (use-package yaml-mode
+  :ensure t)
+
+(use-package json-mode
   :ensure t)
 
 (use-package clojure-mode

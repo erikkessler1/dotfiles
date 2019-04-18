@@ -389,6 +389,7 @@ Outline-based notes management and organizer.
 #+BEGIN_SRC emacs-lisp
   (setq org-src-fontify-natively t)
   (setq org-src-tab-acts-natively t)
+  (define-key org-mode-map (kbd "C-c .") 'org-time-stamp-inactive)
 #+END_SRC
 
 * Development
@@ -691,6 +692,13 @@ Emacs on the fly markdown preview
     :ensure t)
 #+END_SRC
 
+*** JSON
+
+*** General
+#+BEGIN_SRC emacs-lisp
+  (use-package json-mode
+    :ensure t)
+#+END_SRC
 ** Clojure
 
 *** General
