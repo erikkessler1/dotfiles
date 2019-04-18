@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: map_symbol
+# key: ms
+# contributor: Erik Kessler
+# --
+map(&:$1)$0

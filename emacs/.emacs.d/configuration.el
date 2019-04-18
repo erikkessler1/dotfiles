@@ -246,6 +246,11 @@
   :ensure t
   :init (global-flycheck-mode))
 
+(add-to-list 'load-path "~/.emacs.d/resources/yasnippet")
+(require 'yasnippet)
+(yas-global-mode 1)
+(define-key yas-minor-mode-map (kbd "C-c y") yas-maybe-expand)
+
 (use-package ruby-mode
   :ensure t
   :custom ((ruby-insert-encoding-magic-comment nil))
@@ -287,6 +292,45 @@
 (use-package projectile-rails
   :ensure t
   :init (projectile-rails-global-mode))
+
+;; Our own snippets
+(defun projectile-rails--expand-snippet (snippet)
+  "Turn on `yas-minor-mode' and expand SNIPPET."
+  (yas-minor-mode +1)
+  (yas-expand-snippet snippet))
+
+(defun projectile-rails-expand-corresponding-snippet ()
+  "Call `projectile-rails--expand-snippet' with a snippet corresponding to the current file."
+  (let ((name (buffer-file-name)))
+    (cond ((string-match "app/[^/]+/concerns/\\(.+\\)\\.rb$" name)
+           (projectile-rails--expand-snippet
+            (format
+             "module %s\n  extend ActiveSupport::Concern\n  $0\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name))))))
+          ((string-match "app/controllers/\\(.+\\)\\.rb$" name)
+           (projectile-rails--expand-snippet
+            (format
+             "class %s < ${1:ApplicationController}\n$2\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name))))))
+          ((string-match "spec/[^/]+/\\(.+\\)_spec\\.rb$" name)
+           (projectile-rails--expand-snippet
+            (format
+             "describe %s do\n  subject(:${1:subject}) do\n    described_class$0\n  end\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name))))))
+          ((string-match "app/models/\\(.+\\)\\.rb$" name)
+           (projectile-rails--expand-snippet
+            (projectile-rails--snippet-for-model (match-string 1 name))))
+          ((string-match "app/helpers/\\(.+\\)_helper\\.rb$" name)
+           (projectile-rails--expand-snippet
+            (format
+             "module %sHelper\n$1\nend"
+             (s-join "::" (projectile-rails-classify (match-string 1 name))))))
+          ((string-match "lib/\\(.+\\)\\.rb$" name)
+           (projectile-rails--expand-snippet
+            (projectile-rails--snippet-for-module "${1:module} %s\n$2\nend" name)))
+          ((string-match "app/\\(?:[^/]+\\)/\\(.+\\)\\.rb$" name)
+           (projectile-rails--expand-snippet
+            (projectile-rails--snippet-for-module "${1:class} %s\n$2\nend" name))))))
 
 (use-package web-mode
   :ensure t

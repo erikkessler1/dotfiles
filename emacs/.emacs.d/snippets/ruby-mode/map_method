@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: map_method
+# key: mm
+# --
+map(&$1method(:$2))$0

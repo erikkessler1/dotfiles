@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: script
+# key: script
+# --
+# frozen_string_literal:true
+
+require 'bundler'
+require 'bundler/inline'
+
+gemfile do
+  $1
+end
+
+$0
