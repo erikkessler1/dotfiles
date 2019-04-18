@@ -121,7 +121,8 @@
   (define-key ivy-minibuffer-map (kbd "C-m") 'ivy-alt-done)
   (setq ivy-re-builders-alist
         '((swiper . ivy--regex-plus)
-          (t . ivy--regex-fuzzy))))
+          (projectile-find-file . ivy--regex-fuzzy)
+          (t . ivy--regex-plus))))
 
 (use-package counsel
   :ensure t
@@ -236,6 +237,10 @@
   :ensure t
   :config
   (counsel-projectile-mode t))
+
+(counsel-projectile-modify-action
+ 'counsel-projectile-switch-project-action
+ '((default counsel-projectile-switch-project-action-vc)))
 
 (use-package flycheck
   :ensure t
