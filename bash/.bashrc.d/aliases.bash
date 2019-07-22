@@ -15,3 +15,4 @@ alias pulse="kubectl --namespace pulse"
 alias btf="kubectl --namespace below-the-fold"
 
 alias aws="mv ~/Downloads/credentials ~/.aws/"
+alias pryc="bundle exec pry -r ./config/environment"
