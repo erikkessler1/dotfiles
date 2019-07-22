@@ -247,10 +247,6 @@
   :config
   (counsel-projectile-mode t))
 
-(counsel-projectile-modify-action
- 'counsel-projectile-switch-project-action
- '((default counsel-projectile-switch-project-action-vc)))
-
 (use-package flycheck
   :ensure t
   :init (global-flycheck-mode))
