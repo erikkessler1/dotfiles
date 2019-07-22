@@ -377,6 +377,16 @@ Quickly switch windows.
     :chords (" o" . ace-window)
     :custom (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+END_SRC
+
+** Modeline
+
+*** [[https://github.com/seagle0128/doom-modeline][doom-modeline]]
+#+BEGIN_SRC emacs-lisp
+  (use-package all-the-icons :ensure t)
+  (use-package doom-modeline
+        :ensure t
+        :hook (after-init . doom-modeline-mode))
+#+END_SRC
 * General Tools
 
 ** Notes

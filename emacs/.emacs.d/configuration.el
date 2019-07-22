@@ -177,6 +177,11 @@
   :chords (" o" . ace-window)
   :custom (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
+(use-package all-the-icons :ensure t)
+(use-package doom-modeline
+      :ensure t
+      :hook (after-init . doom-modeline-mode))
+
 (setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
 (define-key org-mode-map (kbd "C-c .") 'org-time-stamp-inactive)
