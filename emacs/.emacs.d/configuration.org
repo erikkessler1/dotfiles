@@ -239,9 +239,14 @@ Tree-based completion.
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :ensure t
-    :chords (("jj" . avy-goto-word-or-subword-1)
-            ("jk" . avy-goto-char-timer))
+    :chords (("jk" . avy-goto-word-or-subword-1)
+            ("jj" . avy-goto-char-timer))
     :custom (avy-background t "darken the background"))
+#+END_SRC
+
+*** Goto Line
+#+BEGIN_SRC emacs-lisp
+  (key-chord-define-global "gg" 'goto-line)
 #+END_SRC
 
 ** Completion
@@ -415,6 +420,7 @@ A Git porcelain inside Emacs
   (use-package magit
     :ensure t
     :bind ("C-x g" . magit-status)
+    :chords (("bb" . magit-blame-addition))
     :config (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
 #+END_SRC
 ** Comments

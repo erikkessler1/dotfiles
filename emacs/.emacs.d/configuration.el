@@ -105,9 +105,11 @@
 
 (use-package avy
   :ensure t
-  :chords (("jj" . avy-goto-word-or-subword-1)
-          ("jk" . avy-goto-char-timer))
+  :chords (("jk" . avy-goto-word-or-subword-1)
+          ("jj" . avy-goto-char-timer))
   :custom (avy-background t "darken the background"))
+
+(key-chord-define-global "gg" 'goto-line)
 
 (use-package ivy
   :after counsel
@@ -189,6 +191,7 @@
 (use-package magit
   :ensure t
   :bind ("C-x g" . magit-status)
+  :chords (("bb" . magit-blame-addition))
   :config (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
 
 (defun ek-comment-or-uncomment-region-or-line ()
