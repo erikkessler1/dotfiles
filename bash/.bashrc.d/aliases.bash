@@ -16,3 +16,5 @@ alias btf="kubectl --namespace below-the-fold"
 
 alias aws="mv ~/Downloads/credentials ~/.aws/"
 alias pryc="bundle exec pry -r ./config/environment"
+
+alias fixtime="sudo ntpdate -u time.apple.com"
