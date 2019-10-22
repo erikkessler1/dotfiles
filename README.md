@@ -6,10 +6,10 @@
 
 Use GNU Stow to create symlinks to the home directory, `install.sh`
 
-### Emacs
+### Emacs 27.0
 
 ```bash
 $ brew tap d12frosted/emacs-plus
-$ brew install emacs-plus --without-spacemacs-icon --with-24bit-color --with-natural-title-bar --with-pixel-scrolling
+$ brew install emacs-plus --without-spacemacs-icon --HEAD --with-jansson
 ```
 

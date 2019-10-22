@@ -1,9 +1,7 @@
-
 ;;; -*- lexical-binding: t -*-
 
 (setq gc-cons-threshold 50000000)
 
-(package-initialize)
 (add-to-list 'package-archives
              '("melpa" . "https://melpa.org/packages/")
              '("marmalade" . "http://marmalade-repo.org/packages/"))
@@ -52,6 +50,12 @@
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (tooltip-mode -1))
+
+(add-to-list 'default-frame-alist
+             '(ns-transparent-titlebar . t))
+
+(add-to-list 'default-frame-alist
+             '(ns-appearance . dark))
 
 (global-font-lock-mode t)
 
