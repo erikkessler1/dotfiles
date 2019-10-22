@@ -249,6 +249,11 @@ Tree-based completion.
   (key-chord-define-global "gg" 'goto-line)
 #+END_SRC
 
+*** Saving Positions
+#+BEGIN_SRC emacs-lisp
+  (key-chord-define-global "k1" (lambda () (interactive) (point-to-register ?1)))
+  (key-chord-define-global "j1" (lambda () (interactive) (jump-to-register ?1)))
+#+END_SRC
 ** Completion
 
 *** [[https://github.com/abo-abo/swiper][ivy, counsel, & swiper]]

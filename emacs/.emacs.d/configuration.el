@@ -111,6 +111,9 @@
 
 (key-chord-define-global "gg" 'goto-line)
 
+(key-chord-define-global "k1" (lambda () (interactive) (point-to-register ?1)))
+(key-chord-define-global "j1" (lambda () (interactive) (jump-to-register ?1)))
+
 (use-package ivy
   :after counsel
   :diminish

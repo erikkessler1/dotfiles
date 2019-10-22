@@ -20,13 +20,15 @@
  '(helm-mode t)
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
+ '(key-chord-one-key-delay 0.18 t)
+ '(key-chord-two-keys-delay 0.05 t)
  '(magit-fetch-arguments (quote ("--prune")))
  '(nrepl-message-colors
    (quote
     ("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3")))
  '(package-selected-packages
    (quote
-    (json-mode use-package-chords key-chord key-chords smex flx hydra async avy bind-key clojure-mode dash diminish edit-indirect epl expand-region f ghub git-commit goto-chg helm-core inf-ruby inflections ivy magit-popup pkg-info popup web-mode yaml-mode ace-window aggressive-indent neotree vue-mode flycheck which-key enh-ruby-mode robe company rspec-mode rubocop smartparens ag projectile diff-hl markdown-mode color-theme-sanityinc-tomorrow zenburn-theme helm-ebdb magit projectile-rails)))
+    (doom-modeline json-mode use-package-chords key-chord key-chords smex flx hydra async avy bind-key clojure-mode dash diminish edit-indirect epl expand-region f ghub git-commit goto-chg helm-core inf-ruby inflections ivy magit-popup pkg-info popup web-mode yaml-mode ace-window aggressive-indent neotree vue-mode flycheck which-key enh-ruby-mode robe company rspec-mode rubocop smartparens ag projectile diff-hl markdown-mode color-theme-sanityinc-tomorrow zenburn-theme helm-ebdb magit projectile-rails)))
  '(pdf-view-midnight-colors (quote ("#DCDCCC" . "#383838")))
  '(standard-indent 2))
 (custom-set-faces
