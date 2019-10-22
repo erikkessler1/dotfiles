@@ -1,4 +1,4 @@
-k8c() { salsifyk8s run cmd -a "$1" -e prod rails console "$2"; }
-k8c-s() { salsifyk8s run cmd -a "$1" -e staging rails console "$2"; }
-k8r() { salsifyk8s run cmd -a "$1" -e prod bundle exec rake "$2" "${@:3}"; }
-k8s() { salsifyk8s "$2" -a "$1" -e prod "${@:3}"; }
+k8c() { kubectl run-cmd --namespace "$1" --context prodution bundle exec rails console "$2"; }
+k8c-s() { kubectl run-cmd --namespace "$1" --context staging bundle exec rails console "$2"; }
+k8r() { kubectl run-cmd --namespace "$1" --context production bundle exec rake "$2" "${@:3}"; }
+k8s() { kubectl "$2" --namespace "$1" -context prodution "${@:3}"; }
