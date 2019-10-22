@@ -270,7 +270,7 @@
   (add-hook 'ruby-mode-hook 'subword-mode))
 
 (require 'chruby)
-(chruby "2.5.1")
+(chruby "2.6.5")
 (add-hook 'projectile-after-switch-project-hook 'chruby-use-corresponding)
 
 (use-package rubocop

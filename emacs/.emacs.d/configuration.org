@@ -571,7 +571,7 @@ Emacs integration for chruby
 
 #+BEGIN_SRC emacs-lisp
   (require 'chruby)
-  (chruby "2.5.1")
+  (chruby "2.6.5")
   (add-hook 'projectile-after-switch-project-hook 'chruby-use-corresponding)
 #+END_SRC
 

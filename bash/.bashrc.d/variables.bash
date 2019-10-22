@@ -7,5 +7,5 @@ export KAFKA_DIR="/Users/ekessler/kafka"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
 source /usr/local/share/chruby/chruby.sh
-chruby "2.5.1"
+chruby "2.6.5"
 
