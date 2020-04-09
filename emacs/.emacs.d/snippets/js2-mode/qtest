@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: qtest
+# key: qtest
+# --
+test('$1', async function(assert) {
+${2:  await render(hbs\`$3\`);
+
+}  $0
+
+  assert.ok(true);
+});

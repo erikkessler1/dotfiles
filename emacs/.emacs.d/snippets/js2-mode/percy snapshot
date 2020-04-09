@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: percy_snapshot
+# key: pss
+# --
+await percySnapshot(assert);

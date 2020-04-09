@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: qmod
+# key: qmod
+# --
+module('$1', function(hooks) {
+  $0
+});

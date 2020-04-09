@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: qbfe
+# key: qbfe
+# --
+hooks.beforeEach(function() {
+  $0
+});

@@ -1,0 +1,19 @@
+# -*- mode: snippet -*-
+# name: qcit
+# key: qcit
+# --
+import { module, test } from 'qunit';
+import { setupRenderingTest } from 'ember-qunit';
+import hbs from 'htmlbars-inline-precompile';
+import { render } from '@ember/test-helpers';
+import { setupMirage } from 'ember-cli-mirage/test-support';
+import { setupComponentPageObject } from '@salsify/utilities/test-support';
+import { percySnapshot } from 'ember-percy';
+
+module('Integration | Component | $1', function(hooks) {
+  setupRenderingTest(hooks);
+  setupComponentPageObject(hooks, '$1');
+  setupMirage(hooks);
+
+  $0
+});
