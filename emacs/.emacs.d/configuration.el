@@ -258,6 +258,9 @@
   :ensure t
   :init (global-flycheck-mode))
 
+(use-package flycheck-color-mode-line
+  :ensure t)
+
 (add-to-list 'load-path "~/.emacs.d/resources/yasnippet")
 (require 'yasnippet)
 (yas-global-mode 1)

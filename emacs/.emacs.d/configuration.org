@@ -536,6 +536,9 @@ On-the-fly syntax checking
   (use-package flycheck
     :ensure t
     :init (global-flycheck-mode))
+
+  (use-package flycheck-color-mode-line
+    :ensure t)
 #+END_SRC
 
 ** Templating
