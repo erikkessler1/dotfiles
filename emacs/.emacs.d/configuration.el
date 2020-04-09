@@ -354,6 +354,28 @@
 
 (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
 
+(use-package js2-mode
+  :ensure t
+  :mode "\\.js\\'")
+
+(use-package xref-js2 :ensure t)
+
+(define-key js-mode-map (kbd "M-.") nil)
+
+(add-hook 'js2-mode-hook (lambda ()
+  (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
+
+(defun ek-eslint-exe ()
+  (let* ((root (locate-dominating-file (or (buffer-file-name) default-directory) "node_modules"))
+         (eslint (and root (expand-file-name "node_modules/.bin/eslint" root))))
+    (when (and eslint (file-executable-p eslint)) eslint)))
+
+(defun ek-set-eslint-exe ()
+  (let ((eslint (ek-eslint-exe)))
+    (when eslint (setq-local flycheck-javascript-eslint-executable eslint))))
+
+(add-hook 'flycheck-mode-hook 'ek-set-eslint-exe)
+
 (use-package flymd 
   :ensure t)
 
