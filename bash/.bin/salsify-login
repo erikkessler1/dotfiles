@@ -1,0 +1,27 @@
+#!/usr/bin/env bash
+
+# Uses "magic links" to auto-login to specfied Salsify pages.
+
+env="production"
+while getopts 'sl' flag; do
+  case "$flag" in
+    s) env="staging" ;;
+    l) env="local" ;;
+  esac
+done
+
+logins=/Users/ekessler/dotfiles/resources/salsify-logins.json
+name=$(cat $logins |
+         jq --arg env "$env" '.[$env][] // [] | .name' |
+         sed 's/^"\(.*\)"$/\1/' |
+         fzf --height 40% --reverse)
+
+if [ -z "$name" ]
+then
+  exit
+fi
+
+cat $logins |
+  jq --arg env "$env" --arg name "$name" '.[$env][] | select(.name==$name) | .magic_link' |
+  xargs open
+

@@ -1,0 +1,24 @@
+{
+  "production": [
+    {
+      "name": "Erik Kessler Demo Org/Tasks",
+      "magic_link": "https://app.salsify.com/admin/magic_link?user_id=s-04087d64-8810-40bb-8d41-986c74f6c628&organization_id=s-1696688d-6a62-46a6-a2d8-3cde5338e491&url=app%2Forgs%2Fs-1696688d-6a62-46a6-a2d8-3cde5338e491%2Fcontent-flow%2Ftasks"
+    }
+  ],
+  "staging": [
+    {
+      "name": "Demo Org/Products",
+      "magic_link": "https://staging.salsify.com/admin/magic_link?user_id=s-04087d64-8810-40bb-8d41-986c74f6c628&organization_id=s-a00d9a6f-c6cf-474a-a326-08aa803a15c2&url=app%2Forgs%2Fs-a00d9a6f-c6cf-474a-a326-08aa803a15c2%2Fproducts"
+    }
+  ],
+  "local": [
+    {
+      "name": "Products",
+      "magic_link": "http://localhost:5000/admin/magic_link?user_id=s-7b48f64b-ae12-4746-ad49-70c7b56f4a32&organization_id=s-880845ef-c677-4c39-b927-502a3bb28341&url=app%2Forgs%2Fs-880845ef-c677-4c39-b927-502a3bb28341%2Fproducts%3Fcontent_locales%5B%5D%3Den-US%26sort%3D%2527Item%2520Name%2527%253Aasc"
+    },
+    {
+      "name": "Tasks",
+      "magic_link": "http://localhost:5000/admin/magic_link?user_id=s-7b48f64b-ae12-4746-ad49-70c7b56f4a32&organization_id=s-880845ef-c677-4c39-b927-502a3bb28341&url=app%2Forgs%2Fs-880845ef-c677-4c39-b927-502a3bb28341%2Fcontent-flow%2Ftasks"
+    }
+  ]
+}

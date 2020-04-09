@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# Opens GitHub's file navigator for the specified repo.
+
+less /Users/ekessler/dotfiles/resources/salsify-repos.txt |
+  fzf --height 40% --reverse |
+  xargs printf "https://github.com/salsify/%s/find/master" |
+  xargs open
