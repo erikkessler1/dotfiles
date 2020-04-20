@@ -1,0 +1,29 @@
+#!/usr/bin/env ruby
+
+# Usage: zoom [meeting_name | meeting_id]
+#
+#   Directly open a Zoom meeting by name or id. If you don't pass a
+#   name/id you will be able to select from a list (requires fzf).
+
+def with_filter(command)
+  io = IO.popen(command, 'r+')
+  yield io.method(:puts)
+
+  io.close_write
+  io.readlines.map(&:chomp)
+end
+
+MEETING_IDS = {
+  'office_hours' => '197377535',
+  'pull_up_a_chair' => '611326972',
+  'grooming' => '873479636',
+  'standup' => '197377535'
+}.freeze
+
+key = ARGV.first || with_filter('fzf --height 40% --reverse') do |add_option|
+  MEETING_IDS.keys.each(&add_option)
+end.first
+
+meeting_id = MEETING_IDS.fetch(key, key)
+
+exec("open zoommtg://zoom.us/join?confno=#{meeting_id}")

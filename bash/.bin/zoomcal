@@ -1,0 +1,102 @@
+#!/usr/bin/env ruby
+
+# Setup:
+#  - Create a new Google project
+#  - Copy the credentials to `CREDENTIALS_PATH`
+#
+# Usage: zoomcal
+#  Fetches upcoming events from Google Calendar with a Zoom ID and
+#  allows you to directly join them.
+
+require 'bundler'
+require 'bundler/inline'
+
+gemfile do
+  source 'https://rubygems.org'
+  gem 'google-api-client'
+end
+
+require 'google/apis/calendar_v3'
+require 'googleauth'
+require 'googleauth/stores/file_token_store'
+
+DATA_DIR = File.expand_path('.ekessler', '~')
+APPLICATION_NAME = 'Zoom x Google Calendar CLI'.freeze
+CREDENTIALS_PATH = File.join(DATA_DIR, 'google_credentials.json').freeze
+TOKEN_PATH = File.join(DATA_DIR, 'google_token.yaml').freeze
+
+OOB_URI = 'urn:ietf:wg:oauth:2.0:oob'.freeze
+SCOPE = Google::Apis::CalendarV3::AUTH_CALENDAR_READONLY
+
+ZOOM_ID_REGEX = /https:\/\/salsify\.zoom\.us\/j\/(\d+)/.freeze
+
+def authorize
+  client_id = Google::Auth::ClientId.from_file(CREDENTIALS_PATH)
+  token_store = Google::Auth::Stores::FileTokenStore.new(file: TOKEN_PATH)
+  authorizer = Google::Auth::UserAuthorizer.new(client_id, SCOPE, token_store)
+  user_id = 'default'
+
+  credentials = authorizer.get_credentials(user_id)
+  return credentials if credentials
+
+  url = authorizer.get_authorization_url(base_url: OOB_URI)
+  puts 'Open the following URL in the browser and enter the ' \
+       "resulting code after authorization:\n#{url}"
+
+  code = gets
+  authorizer.get_and_store_credentials_from_code(
+    user_id: user_id,
+    code: code,
+    base_url: OOB_URI
+  )
+end
+
+def get_events(max_results:)
+  service = Google::Apis::CalendarV3::CalendarService.new
+  service.client_options.application_name = APPLICATION_NAME
+  service.authorization = authorize
+
+  calendar_id = 'primary'
+  service.list_events(
+    calendar_id,
+    max_results: max_results,
+    single_events: true,
+    order_by: 'startTime',
+    time_min: DateTime.now.rfc3339
+  ).items
+end
+
+def with_fzf(options = '')
+  io = IO.popen("fzf #{options}", 'r+')
+  yield io.method(:puts)
+
+  io.close_write
+  io.readlines.map(&:chomp)
+end
+
+def color(string, code)
+  "\033[#{code}m#{string}\033[0m"
+end
+
+events = get_events(max_results: 3)
+
+if events.empty?
+  puts 'No upcoming events...'
+  exit(0)
+end
+
+meeting_id = with_fzf('--height 40% --reverse --ansi') do |add_option|
+  events.each do |event|
+    next unless event.start.date_time
+
+    zoom_id_match = event.description&.match(ZOOM_ID_REGEX)
+    next unless zoom_id_match
+
+    zoom_id = zoom_id_match[1]
+    start = event.start.date_time.strftime('%I:%M %p')
+
+    add_option["#{color(start, 36)} | #{color(event.summary, '33')} | #{zoom_id}"]
+  end
+end.first&.split(' | ')&.last
+
+exec("open zoommtg://zoom.us/join?confno=#{meeting_id}") if meeting_id
