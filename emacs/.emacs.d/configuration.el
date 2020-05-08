@@ -31,7 +31,8 @@
 (setq confirm-kill-emacs 'y-or-n-p)
 
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-(setenv "PATH" (concat (getenv "PATH") ":/Applications/Postgres.app/Contents/Versions/9.6/bin"))
+(setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/bin"))
+(setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/.salsify/bin"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
 
 (add-to-list 'load-path (concat user-emacs-directory "resources"))
