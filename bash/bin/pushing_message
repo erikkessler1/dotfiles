@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+# frozen_string_literal: true
+
+from_rev = ARGV.shift
+to_rev = ARGV.shift
+
+# pushing_message [FROM] [TO] | pbcopy
+
+diff = `git log --pretty="%h %s (%an)" #{from_rev}..#{to_rev}`.chomp
+
+puts <<~MESSAGE
+  Pushing `#{to_rev}` of `content-flow-service` to production.
+
+  *Changes*
+  ```
+  #{diff}
+  ```
+MESSAGE

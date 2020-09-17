@@ -435,6 +435,15 @@ A Git porcelain inside Emacs
     :bind ("C-x g" . magit-status)
     :chords (("bb" . magit-blame-addition))
     :config (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
+
+  (defun ek-pushing-message ()
+    "Copy pushing message to the clipboard"
+    (interactive)
+    (let* ((refs (magit-region-values))
+           (command (string-join (list "pushing_message" (car (last refs)) (car refs)) " ")))
+      (progn
+        (kill-new (shell-command-to-string command))
+        (message "Copied message!" command))))
 #+END_SRC
 ** Comments
 

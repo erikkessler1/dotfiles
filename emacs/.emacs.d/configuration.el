@@ -204,6 +204,15 @@
   :chords (("bb" . magit-blame-addition))
   :config (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
 
+(defun ek-pushing-message ()
+  "Copy pushing message to the clipboard"
+  (interactive)
+  (let* ((refs (magit-region-values))
+         (command (string-join (list "pushing_message" (car (last refs)) (car refs)) " ")))
+    (progn
+      (kill-new (shell-command-to-string command))
+      (message "Copied message!" command))))
+
 (defun ek-comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if
   there's no active region."
