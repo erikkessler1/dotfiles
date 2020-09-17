@@ -85,7 +85,7 @@ if events.empty?
   exit(0)
 end
 
-meeting_id = with_fzf('--height 40% --reverse --ansi') do |add_option|
+meeting_id, pwd = with_fzf('--height 40% --reverse --ansi') do |add_option|
   events.each do |event|
     next unless event.start.date_time
 
@@ -95,8 +95,11 @@ meeting_id = with_fzf('--height 40% --reverse --ansi') do |add_option|
     zoom_id = zoom_id_match[1]
     start = event.start.date_time.strftime('%I:%M %p')
 
-    add_option["#{color(start, 36)} | #{color(event.summary, '33')} | #{zoom_id}"]
-  end
-end.first&.split(' | ')&.last
+    pwd_match = event.description&.match(/Password: (\w+)/)
+    pwd = pwd_match ? pwd_match[1] : nil
 
-exec("open zoommtg://zoom.us/join?confno=#{meeting_id}") if meeting_id
+    add_option["#{color(start, 36)} | #{color(event.summary, '33')} | #{zoom_id}#{pwd ? '🔒' + pwd : ''}"]
+  end
+end.first&.split(' | ')&.last&.split('🔒')
+
+exec("open \"zoommtg://zoom.us/join?confno=#{meeting_id}#{pwd ? '&pwd=' + pwd : ''}\"") if meeting_id
