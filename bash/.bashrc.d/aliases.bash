@@ -18,3 +18,5 @@ alias aws="mv ~/Downloads/credentials ~/.aws/"
 alias pryc="bundle exec pry -r ./config/environment"
 
 alias fixtime="sudo ntpdate -u time.apple.com"
+
+alias sr="docker-compose -f /Users/ekessler/engineering-environment-setup/shared-services/service-registry.yml"
