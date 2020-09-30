@@ -273,29 +273,6 @@
 (use-package flycheck-color-mode-line
   :ensure t)
 
-(defvar prose-modes
-    '(git-commit-mode
-      markdown-mode
-      org-mode
-      text-mode))
-
-(flycheck-def-executable-var proselint "proselint")
-(flycheck-define-command-checker 'proselint
-  "A linter for prose."
-  :command '("proselint" source-inplace)
-  :error-patterns
-  '((warning line-start (file-name) ":" line ":" column ": "
-             (id (one-or-more (not (any " "))))
-             (message (one-or-more not-newline)
-                      (zero-or-more "\n" (any " ") (one-or-more not-newline)))
-             line-end))
-  :modes prose-modes
-  :next-checkers 'nil
-  :standard-input 'nil
-  :working-directory 'nil)
-
-(add-to-list 'flycheck-checkers 'proselint)
-
 (add-to-list 'load-path "~/.emacs.d/resources/yasnippet")
 (require 'yasnippet)
 (yas-global-mode 1)
