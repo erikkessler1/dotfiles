@@ -13,6 +13,8 @@ alias audits_dev="cd /Users/ekessler/audits-service; docker run --rm --env \"KAF
 
 alias pulse="kubectl --namespace pulse"
 alias btf="kubectl --namespace below-the-fold"
+alias c="kubectl run-cmd -n content-flow-service --context production rails c --no-sandbox -- -- --nomultiline"
+alias d="kubectl run-cmd -n dandelion --context production rails c --no-sandbox -- -- --nomultiline"
 
 alias aws="mv ~/Downloads/credentials ~/.aws/"
 alias pryc="bundle exec pry -r ./config/environment"
