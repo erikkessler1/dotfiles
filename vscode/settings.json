@@ -1,0 +1,24 @@
+{
+    "workbench.colorTheme": "Zenburn",
+    "editor.fontSize": 18,
+    "editor.minimap.enabled": false,
+    "workbench.activityBar.visible": true,
+    "editor.tabSize": 2,
+    "window.zoomLevel": 0,
+    "json.trace.server": "verbose",
+    "editor.largeFileOptimizations": false,
+    "editor.renderWhitespace": "all",
+    "files.trimFinalNewlines": true,
+    "files.insertFinalNewline": true,
+    "typescript.preferences.importModuleSpecifier": "non-relative",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "[json]": {
+        "editor.defaultFormatter": "vscode.json-language-features"
+    },
+    "extensions.ignoreRecommendations": true,
+    "[handlebars]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    }
+}
