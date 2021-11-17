@@ -19,3 +19,6 @@ stow vscode -t "/Users/ekessler/Library/Application Support/Code/User/" --adopt
 # Link .bash_profile -> .bashrc
 rm -f ~/.bash_profile
 ln -s ~/.bashrc ~/.bash_profile
+
+git config --global user.name "Erik Kessler"
+git config --global user.email "ekessler@salsify.com"
