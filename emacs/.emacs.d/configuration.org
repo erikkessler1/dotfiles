@@ -562,8 +562,8 @@ A template system for Emacs
 #+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp
-  (add-to-list 'load-path "~/.emacs.d/resources/yasnippet")
-  (require 'yasnippet)
+  (use-package yasnippet
+    :ensure t)
   (yas-global-mode 1)
   (define-key yas-minor-mode-map (kbd "C-c y") yas-maybe-expand)
 #+END_SRC

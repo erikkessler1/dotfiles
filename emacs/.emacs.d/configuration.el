@@ -274,8 +274,8 @@
 (use-package flycheck-color-mode-line
   :ensure t)
 
-(add-to-list 'load-path "~/.emacs.d/resources/yasnippet")
-(require 'yasnippet)
+(use-package yasnippet
+  :ensure t)
 (yas-global-mode 1)
 (define-key yas-minor-mode-map (kbd "C-c y") yas-maybe-expand)
 
