@@ -388,6 +388,12 @@
 
 (add-hook 'flycheck-mode-hook 'ek-set-eslint-exe)
 
+(defun ek-format-md ()
+  "Format Markdown"
+  (interactive)
+  (shell-command-to-string
+   (format "~/adrs/node_modules/prettier/bin-prettier.js --write %s" buffer-file-name)))
+
 (use-package flymd 
   :ensure t)
 

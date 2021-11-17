@@ -734,6 +734,17 @@ JavaScript.
 
 ** Markdown
 
+*** General
+
+TODO: Remove ADRs hardcoding.
+#+BEGIN_SRC emacs-lisp
+  (defun ek-format-md ()
+    "Format Markdown"
+    (interactive)
+    (shell-command-to-string
+     (format "~/adrs/node_modules/prettier/bin-prettier.js --write %s" buffer-file-name)))
+#+END_SRC
+
 *** [[https://github.com/mola-T/flymd][flymd]]
 #+BEGIN_QUOTE
 Emacs on the fly markdown preview
