@@ -20,5 +20,6 @@
     "extensions.ignoreRecommendations": true,
     "[handlebars]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
-    }
+    },
+    "terminal.integrated.defaultProfile.osx": "bash"
 }
