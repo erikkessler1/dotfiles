@@ -1,12 +1,14 @@
 # Taps
 tap "d12frosted/emacs-plus"
+tap "homebrew/cask-fonts"
 
 # Packages
 brew "chruby"
-brew "emacs-plus@27" --with-no-titlebar --with-nobu417-big-sur-icon
-brew "iterm"
 brew "ruby-install"
 brew "stow"
+brew "svn" # needed for fonts
 
 # Casks
-cask "iterm"
+cask "font-source-code-pro"
+cask "iterm2"
+cask "visual-studio-code"
