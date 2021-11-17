@@ -1,5 +1,7 @@
 **/*.cache
 
+Brewfile.lock.json
+
 emacs/.emacs.d/network-security.data
 
 emacs/.emacs.d/resources/**
