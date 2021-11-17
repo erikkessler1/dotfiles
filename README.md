@@ -13,3 +13,8 @@ $ brew tap d12frosted/emacs-plus
 $ brew install emacs-plus@27 --with-no-titlebar --with-nobu417-big-sur-icon
 ```
 
+### Rubies
+
+```bash
+$ ruby-install ruby 2.7.2
+```
