@@ -27,7 +27,7 @@
  '(nrepl-message-colors
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3" "#94BFF3" "#DC8CC3"))
  '(package-selected-packages
-   '(typescript-mode xref-js2 js2-mode flycheck-pos-tip flycheck-color-mode-line doom-modeline json-mode use-package-chords key-chord key-chords smex flx hydra async avy bind-key clojure-mode diminish edit-indirect epl expand-region f ghub git-commit goto-chg helm-core inf-ruby inflections ivy magit-popup pkg-info popup web-mode yaml-mode ace-window aggressive-indent neotree vue-mode which-key enh-ruby-mode robe company rspec-mode rubocop smartparens ag projectile diff-hl markdown-mode color-theme-sanityinc-tomorrow zenburn-theme helm-ebdb magit projectile-rails))
+   '(xref-js2 js2-mode flycheck-pos-tip flycheck-color-mode-line doom-modeline json-mode use-package-chords key-chord key-chords smex flx hydra async avy bind-key clojure-mode dash diminish edit-indirect epl expand-region f ghub git-commit goto-chg helm-core inf-ruby inflections ivy magit-popup pkg-info popup web-mode yaml-mode ace-window aggressive-indent neotree vue-mode which-key enh-ruby-mode robe company rspec-mode rubocop smartparens ag projectile diff-hl markdown-mode color-theme-sanityinc-tomorrow zenburn-theme helm-ebdb magit projectile-rails))
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(standard-indent 2))
 (custom-set-faces

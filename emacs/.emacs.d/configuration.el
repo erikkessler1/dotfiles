@@ -1,4 +1,3 @@
-
 ;;; -*- lexical-binding: t -*-
 
 (setq gc-cons-threshold 50000000)
@@ -32,7 +31,6 @@
 
 (setq confirm-kill-emacs 'y-or-n-p)
 
-(setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/.nvm/versions/node/v12.10.0/bin"))
 (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
 (setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/bin"))
 (setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/.salsify/bin"))
@@ -162,17 +160,6 @@
 (use-package ag 
   :ensure t
   :ensure-system-package ag)
-
-(setq lsp-keymap-prefix "C-c l")
-
-(use-package lsp-mode
-  :ensure t
-  :hook ((ruby-mode . lsp)
-         (typescript-mode . lsp))
-  :commands lsp)
-
-(use-package lsp-ui :ensure t :commands lsp-ui-mode)
-(use-package lsp-ivy :ensure t :commands lsp-ivy-workspace-symbol)
 
 (setq-default dired-listing-switches "-alh")
 
@@ -389,9 +376,6 @@
 
 (add-hook 'js2-mode-hook (lambda ()
   (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
-
-(use-package typescript-mode
-  :ensure t)
 
 (defun ek-eslint-exe ()
   (let* ((root (locate-dominating-file (or (buffer-file-name) default-directory) "node_modules"))

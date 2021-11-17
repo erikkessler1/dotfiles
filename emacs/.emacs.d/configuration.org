@@ -78,7 +78,6 @@ Make sure we want to quit.
 *** Paths
 Include user binaries.
 #+BEGIN_SRC emacs-lisp
-  (setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/.nvm/versions/node/v12.10.0/bin"))
   (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
   (setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/bin"))
   (setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/.salsify/bin"))
@@ -345,27 +344,6 @@ A front-end for ag ('the silver searcher')
       :ensure t
       :ensure-system-package ag)
 #+END_SRC
-
-** Language Server
-
-*** [[https://emacs-lsp.github.io/lsp-mode/][lsp-mode]]
-#+BEGIN_QUOTE
-Language Server Protocol Support for Emacs
-#+END_QUOTE
-
-#+BEGIN_SRC emacs-lisp
-  (setq lsp-keymap-prefix "C-c l")
-
-  (use-package lsp-mode
-    :ensure t
-    :hook ((ruby-mode . lsp)
-           (typescript-mode . lsp))
-    :commands lsp)
-
-  (use-package lsp-ui :ensure t :commands lsp-ui-mode)
-  (use-package lsp-ivy :ensure t :commands lsp-ivy-workspace-symbol)
-#+END_SRC
-
 * Buffers & files
 
 ** Directories
@@ -733,11 +711,6 @@ Projectile integration
 
   (add-hook 'js2-mode-hook (lambda ()
     (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (use-package typescript-mode
-    :ensure t)
 #+END_SRC
 
 *** [[https://eslint.org/][eslint]]
