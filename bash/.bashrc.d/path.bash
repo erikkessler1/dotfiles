@@ -14,4 +14,3 @@ pathmunge "$HOME/.salsify/bin"
 pathmunge $HOME/bin after
 
 export PATH
-
