@@ -4,6 +4,7 @@ tap "homebrew/cask-fonts"
 
 # Packages
 brew "chruby"
+brew "fzf"
 brew "ruby-install"
 brew "stow"
 brew "svn" # needed for fonts
