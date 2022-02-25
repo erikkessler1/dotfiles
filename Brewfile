@@ -8,6 +8,7 @@ brew "fzf"
 brew "ruby-install"
 brew "stow"
 brew "svn" # needed for fonts
+brew "volta"
 
 # Casks
 cask "font-source-code-pro"

@@ -19,5 +19,6 @@ chruby "2.7.2"
 source $HOME/bin/git-completion.sh
 [ -f /usr/local/etc/bash_completion ] && . /usr/local/etc/bash_completion
 
-# nvm
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+# volta
+export VOLTA_HOME="$HOME/.volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
