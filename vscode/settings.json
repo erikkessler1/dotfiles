@@ -4,7 +4,6 @@
     "editor.minimap.enabled": false,
     "workbench.activityBar.visible": true,
     "editor.tabSize": 2,
-    "window.zoomLevel": 0,
     "json.trace.server": "verbose",
     "editor.largeFileOptimizations": false,
     "editor.renderWhitespace": "all",
@@ -12,7 +11,7 @@
     "files.insertFinalNewline": true,
     "typescript.preferences.importModuleSpecifier": "non-relative",
     "[typescript]": {
-        "editor.defaultFormatter": "esbenp.prettier-vscode"
+        "editor.defaultFormatter": "vscode.typescript-language-features"
     },
     "[json]": {
         "editor.defaultFormatter": "vscode.json-language-features"
@@ -21,5 +20,6 @@
     "[handlebars]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
-    "terminal.integrated.defaultProfile.osx": "bash"
+    "terminal.integrated.defaultProfile.osx": "bash",
+    "window.title": "${activeEditorShort}${separator}${rootPath}"
 }
