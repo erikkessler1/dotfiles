@@ -14,5 +14,7 @@ emacs/.emacs.d/eshell/
 emacs/.emacs.d/transient/
 emacs/.emacs.d/projectile-bookmarks.eld
 emacs/.emacs.d/smex-items
+emacs/.emacs.d/tramp
+emacs/.emacs.d/recentf
 
 bash/.bashrc.d/secrets.bash
