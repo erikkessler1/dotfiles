@@ -78,7 +78,7 @@ def color(string, code)
   "\033[#{code}m#{string}\033[0m"
 end
 
-events = get_events(max_results: 3)
+events = get_events(max_results: 10)
 
 if events.empty?
   puts 'No upcoming events...'
@@ -89,13 +89,19 @@ meeting_id, pwd = with_fzf('--height 40% --reverse --ansi') do |add_option|
   events.each do |event|
     next unless event.start.date_time
 
-    zoom_id_match = event.description&.match(ZOOM_ID_REGEX)
+    description = [
+      event.description || "",
+      event.location || "",
+      *(event.conference_data&.entry_points&.map(&:uri) || [])
+    ].join("\n")
+    zoom_id_match = description.match(ZOOM_ID_REGEX)
     next unless zoom_id_match
 
     zoom_id = zoom_id_match[1]
     start = event.start.date_time.strftime('%I:%M %p')
 
-    pwd_match = event.description&.match(/Password: (\w+)/)
+    pwd_match = description.match(/Password: (\w+)/)
+    pwd_match ||= description.match(/pwd=(\w+)/)
     pwd = pwd_match ? pwd_match[1] : nil
 
     add_option["#{color(start, 36)} | #{color(event.summary, '33')} | #{zoom_id}#{pwd ? '🔒' + pwd : ''}"]
