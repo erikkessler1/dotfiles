@@ -1,3 +1,4 @@
+source ~/.bashrc.d/secrets.bash
 source ~/.bashrc.d/variables.bash
 source ~/.bashrc.d/path.bash
 source ~/.bashrc.d/aliases.bash

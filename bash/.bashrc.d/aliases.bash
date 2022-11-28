@@ -20,5 +20,6 @@ alias aws="mv ~/Downloads/credentials ~/.aws/"
 alias pryc="bundle exec pry -r ./config/environment"
 
 alias fixtime="sudo ntpdate -u time.apple.com"
+alias okta="ruby -e \"require 'rotp'; puts ROTP::TOTP.new(ENV.fetch('OKTA_2FA_KEY')).now\" | pbcopy"
 
 alias sr='docker-compose -f $(find $(brew --prefix sds)/ -name service-registry.yml)'
