@@ -22,3 +22,7 @@ source $HOME/bin/git-completion.sh
 # volta
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
+
+# puppeteer
+export PUPPETEER_EXECUTABLE_PATH=$(brew --prefix)/bin/chromium
+export PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true
