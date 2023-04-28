@@ -792,3 +792,15 @@ Emacs on the fly markdown preview
     (add-hook 'clojure-mode-hook 'smartparens-strict-mode)
     (add-hook 'clojure-mode-hook 'subword-mode))
 #+END_SRC
+
+
+** Golang
+
+*** General
+
+#+BEGIN_SRC emacs-lisp
+  (use-package go-mode
+    :ensure t
+    :config
+    (add-hook 'go-mode-hook (lambda () (setq tab-width 2))))
+#+END_SRC
