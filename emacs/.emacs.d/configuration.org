@@ -82,6 +82,7 @@ Include user binaries.
   (setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/bin"))
   (setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/.salsify/bin"))
   (setq exec-path (append exec-path '("/usr/local/bin")))
+  (setq exec-path (append exec-path '("/opt/homebrew/bin")))
 #+END_SRC
 
 Load the ~resources~ directory.

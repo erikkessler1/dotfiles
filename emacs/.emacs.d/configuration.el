@@ -35,6 +35,7 @@
 (setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/bin"))
 (setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/.salsify/bin"))
 (setq exec-path (append exec-path '("/usr/local/bin")))
+(setq exec-path (append exec-path '("/opt/homebrew/bin")))
 
 (add-to-list 'load-path (concat user-emacs-directory "resources"))
 
