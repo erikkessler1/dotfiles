@@ -185,6 +185,16 @@
       (kill-new filename)
       (message "Copied buffer file name '%s' to the clipboard." filename))))
 
+(defun ek-copy-rspec-name ()
+  "Copy the current filename to the clipboard"
+  (interactive)
+  (let ((filename (if (equal major-mode 'dired-mode)
+                      default-directory
+                    (buffer-file-name))))
+    (when filename
+      (kill-new (format "be rspec %s:%d" filename (line-number-at-pos)))
+      (message "Copied buffer file name '%s' to the clipboard." filename))))
+
 (use-package ace-window
   :ensure t
   :bind ("M-o" . ace-window)
