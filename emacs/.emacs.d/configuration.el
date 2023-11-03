@@ -216,7 +216,10 @@
   :ensure t
   :bind ("C-x g" . magit-status)
   :chords (("bb" . magit-blame-addition))
-  :config (add-hook 'git-commit-mode-hook 'turn-on-flyspell))
+  :config
+  (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
+  (transient-append-suffix 'magit-branch "l"
+    '("!" "reset to master" ek-magit-reset-to-master)))
 
 (defun ek-pushing-message ()
   "Copy pushing message to the clipboard"
@@ -226,6 +229,19 @@
     (progn
       (kill-new (shell-command-to-string command))
       (message "Copied message!" command))))
+
+(defun ek-magit-reset-to-master ()
+  (interactive)
+  (let ((old (magit-get-current-branch)))
+    (message "Fetching...")
+    (magit-git-fetch "origin" (list "--prune"))
+    (magit-refresh)
+    (magit-run-git "fetch" "origin" "master:master")
+    (message "Checking out master...")
+    (magit-run-git "checkout" "master")
+    (message "Deleting '%s'..." old)
+    (magit-run-git "branch" "-D" old)
+    (message "Complete!")))
 
 (defun ek-comment-or-uncomment-region-or-line ()
   "Comments or uncomments the region or the current line if
