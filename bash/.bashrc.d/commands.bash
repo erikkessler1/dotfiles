@@ -5,5 +5,5 @@ k8s() { kubectl "$2" --namespace "$1" -context prodution "${@:3}"; }
 
 init() {
     colima start --memory 8
-    sr start postgres zookeeper kafka redis
+    sal devenv start -g core
 }
