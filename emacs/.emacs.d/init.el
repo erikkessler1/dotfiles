@@ -38,3 +38,4 @@
  ;; If there is more than one, they won't work right.
  '(region ((t (:background "MediumPurple1" :foreground "gray100")))))
 (put 'dired-find-alternate-file 'disabled nil)
+(put 'upcase-region 'disabled nil)
