@@ -90,6 +90,12 @@ Load the ~resources~ directory.
   (add-to-list 'load-path (concat user-emacs-directory "resources"))
 #+END_SRC
 
+*** Environment Variables
+
+#+BEGIN_SRC emacs-lisp
+  (setenv "OVERCOMMIT_DISABLE" "1")
+#+END_SRC
+
 *** Backups
 Keep them in a separate directory.
 #+BEGIN_SRC emacs-lisp

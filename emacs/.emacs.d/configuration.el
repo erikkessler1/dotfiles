@@ -39,6 +39,8 @@
 
 (add-to-list 'load-path (concat user-emacs-directory "resources"))
 
+(setenv "OVERCOMMIT_DISABLE" "1")
+
 (setq backup-directory-alist `(("." . ,(concat user-emacs-directory "backups")))
       backup-by-copying t
       version-control t ; use version numbers on backups
