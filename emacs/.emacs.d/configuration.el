@@ -203,9 +203,11 @@
   :chords (" o" . ace-window)
   :custom (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-(use-package all-the-icons :ensure t)
+(use-package nerd-icons :ensure t)
 (use-package doom-modeline
       :ensure t
+      :init
+      (setq doom-modeline-buffer-encoding nil)
       :hook (after-init . doom-modeline-mode))
 
 (setq org-src-fontify-natively t)

@@ -420,9 +420,11 @@ Quickly switch windows.
 
 *** [[https://github.com/seagle0128/doom-modeline][doom-modeline]]
 #+BEGIN_SRC emacs-lisp
-  (use-package all-the-icons :ensure t)
+  (use-package nerd-icons :ensure t)
   (use-package doom-modeline
         :ensure t
+        :init
+        (setq doom-modeline-buffer-encoding nil)
         :hook (after-init . doom-modeline-mode))
 #+END_SRC
 * General Tools
