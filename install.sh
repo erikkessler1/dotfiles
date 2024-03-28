@@ -22,6 +22,3 @@ ln -s ~/.bashrc ~/.bash_profile
 
 git config --global user.name "Erik Kessler"
 git config --global user.email "ekessler@salsify.com"
-
-# Needed for `sr` alias
-git clone git@github.com:salsify/sal.git
