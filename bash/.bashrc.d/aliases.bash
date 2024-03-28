@@ -4,6 +4,7 @@ alias mirror="PORT=8081 http-echo-server"
 alias oports="echo 'User:      Command:   Port:'; echo '----------------------------' ; lsof -i 4 -P -n | grep -i 'listen' | awk '{print \$3, \$1, \$9}' | sed 's/ [a-z0-9\.\*]*:/ /' | sort -k 3 -n |xargs printf '%-10s %-10s %-10s\n' | uniq"
 alias myip="ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*'"
 alias preview="fzf --preview 'bat --color \"always\" {}'"
+alias sc="git diff --name-only master | cspell --config /Users/ekessler/dotfiles/resources/cspell.json --no-must-find-files --file-list stdin"
 
 alias be="bundle exec"
 alias sr='docker-compose -f ~/sal/internal/pkg/sharedservices/service-registry.yml'
