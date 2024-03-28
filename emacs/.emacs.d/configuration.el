@@ -201,7 +201,9 @@
   :ensure t
   :bind ("M-o" . ace-window)
   :chords (" o" . ace-window)
-  :custom (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+  :custom
+  (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
+  (aw-scope'frame))
 
 (use-package nerd-icons :ensure t)
 (use-package doom-modeline
