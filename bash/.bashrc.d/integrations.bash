@@ -13,7 +13,7 @@ fi
 
 # chruby
 source $(brew --prefix)/opt/chruby/share/chruby/chruby.sh
-chruby "3.3.0"
+chruby "3.3.1"
 
 # git-completion
 source $HOME/bin/git-completion.sh
