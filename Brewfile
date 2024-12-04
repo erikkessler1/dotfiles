@@ -1,6 +1,5 @@
 # Taps
 tap "d12frosted/emacs-plus"
-tap "homebrew/cask-fonts"
 
 # Packages
 brew "chruby"
