@@ -4,17 +4,27 @@
 
 ## Installation
 
-Use GNU Stow to create symlinks to the home directory, `install.sh`
+First, add a GitHub SSH key:
 
-### Emacs 29
+    read -p "Enter email for SSH Key: " email && ssh-keygen -t ed25519 -C "$email" && eval "$(ssh-agent -s)" && echo -e "Host github.com\n  AddKeysToAgent yes\n  IdentityFile ~/.ssh/id_ed25519" > ~/.ssh/config && ssh-add --apple-use-keychain ~/.ssh/id_ed25519 && && pbcopy < ~/.ssh/id_ed25519.pub && open https://github.com/settings/keys
 
-```bash
-$ brew tap d12frosted/emacs-plus
-$ brew install emacs-plus@29 --with-nobu417-big-sur-icon
-```
+Then clone this repository:
 
-### Rubies
+    git clone git@github.com:erikkessler1/dotfiles.git
 
-```bash
-$ ruby-install ruby 3.3.1 -- --enable-yjit --with-openssl-dir=$(brew --prefix openssl@3) && source ~/.bash_profile && chruby 3.3.1 && gem install 'rotp'
-```
+Once the respository is cloned, run:
+
+     cd dotfiles
+    ./install.sh
+
+## Manual Settings
+
+These are some things to manually set:
+
+- Trackpad > Point & Click > Tracking Speed: Fast - 1
+- Trackpad > Scroll & Zoom > Natural Scrolling: Off
+- Keyboard > Key repeat rate: Fast
+- Keyboard > Delay until repeat: Short
+- Keyboard > Keyboard Shortcuts > Modifier Keys > Caps Lock: Control
+- Desktop & Dock > Dock > Automatically hide and show the Dock: On
+- Desktop & Dock > Windows > Tiled windows have margins > Off
