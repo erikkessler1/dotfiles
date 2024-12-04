@@ -20,5 +20,6 @@ stow vscode -t "$HOME/Library/Application Support/Code/User/" --adopt
 rm -f ~/.bash_profile
 ln -s ~/.bashrc ~/.bash_profile
 
+read -p "Enter email for git: " email
 git config --global user.name "Erik Kessler"
-git config --global user.email "ekessler@salsify.com"
+git config --global user.email $email
