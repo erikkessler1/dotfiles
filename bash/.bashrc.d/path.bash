@@ -8,6 +8,7 @@ pathmunge () {
   fi
 }
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
 pathmunge "$HOME/.cargo/bin"
 pathmunge "${KREW_ROOT:-$HOME/.krew}/bin"
 pathmunge "$HOME/.salsify/bin"

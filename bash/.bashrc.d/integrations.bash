@@ -1,6 +1,3 @@
-#brew
-eval "$(/opt/homebrew/bin/brew shellenv)"
-
 # iterm
 test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
 
