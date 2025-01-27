@@ -10,3 +10,4 @@ alias be="bundle exec"
 
 alias aws="mv ~/Downloads/credentials ~/.aws/"
 alias okta="ruby -e \"require 'rotp'; puts ROTP::TOTP.new(ENV.fetch('OKTA_2FA_KEY')).now\" | pbcopy"
+alias adrwatch="fswatch -0 */XXXX-XX-XX-*.md | xargs -0 -I {} yarn prettier lint --write */XXXX-XX-XX-*.md"
