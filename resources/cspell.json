@@ -8,7 +8,10 @@
     "Railtie",
     "retryable",
     "unbreak",
-    "unbreaking"
+    "unbreaking",
+    "PIMCORE",
+    "computeds",
+    "percolations"
   ],
   "flagWords": [
   ]

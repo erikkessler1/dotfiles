@@ -32,4 +32,4 @@ npm install -g cspell
 npm install -g prettier
 
 # Rubies
-add-ruby 3.3.1
+add-ruby 3.3.6
