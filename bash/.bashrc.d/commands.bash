@@ -11,6 +11,6 @@ init() {
 add-ruby() {
     ruby-install ruby "$1" -- --enable-yjit --with-openssl-dir=$(brew --prefix openssl@3) &&
         source ~/.bash_profile &&
-        chruby 3.3.1 &&
+        chruby "$1" &&
         gem install 'rotp'
 }
