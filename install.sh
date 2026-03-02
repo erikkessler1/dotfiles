@@ -40,7 +40,7 @@ if ! [[ $(command -v rustc) ]]; then
     echo 'Change options so that .bash_profile *not* modified!'
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 fi
-add-ruby 3.3.6
+add-ruby 3.4.8
 
 # Emacs
 osascript -e 'tell application "Finder" to make alias file to posix file "/opt/homebrew/Cellar/emacs-plus\@29/29.4/Emacs.app" at posix file "/Applications" with properties {name:"Emacs.app"}'
