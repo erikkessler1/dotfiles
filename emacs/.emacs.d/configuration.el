@@ -27,15 +27,16 @@
 
 (setq inhibit-startup-message t)
 (setq initial-scratch-message nil)
-(fset 'yes-or-no-p 'y-or-n-p)
+(setq use-short-answers t)
 
 (setq confirm-kill-emacs 'y-or-n-p)
 
-(setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-(setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/bin"))
-(setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/.salsify/bin"))
-(setq exec-path (append exec-path '("/usr/local/bin")))
-(setq exec-path (append exec-path '("/opt/homebrew/bin")))
+(dolist (dir '("/usr/local/bin"
+               "/opt/homebrew/bin"
+               "/Users/ekessler/bin"
+               "/Users/ekessler/.salsify/bin"))
+  (setenv "PATH" (concat (getenv "PATH") ":" dir))
+  (add-to-list 'exec-path dir))
 
 (add-to-list 'load-path (concat user-emacs-directory "resources"))
 
@@ -153,9 +154,6 @@
 (use-package flx
   :ensure t)
 
-(use-package smex
-  :ensure t)
-
 (use-package expand-region
   :ensure t
   :bind ("C-=" . er/expand-region))
@@ -188,14 +186,14 @@
       (message "Copied buffer file name '%s' to the clipboard." filename))))
 
 (defun ek-copy-rspec-name ()
-  "Copy the current filename to the clipboard"
+  "Copy an rspec command for the current file and line to the clipboard."
   (interactive)
   (let ((filename (if (equal major-mode 'dired-mode)
                       default-directory
                     (buffer-file-name))))
     (when filename
       (kill-new (format "be rspec %s:%d" filename (line-number-at-pos)))
-      (message "Copied buffer file name '%s' to the clipboard." filename))))
+      (message "Copied rspec command for '%s' to the clipboard." filename))))
 
 (use-package ace-window
   :ensure t
@@ -203,7 +201,7 @@
   :chords (" o" . ace-window)
   :custom
   (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-  (aw-scope'frame))
+  (aw-scope 'frame))
 
 ;; run (nerd-icons-install-fonts) initial install
 (use-package nerd-icons :ensure t)
@@ -276,7 +274,8 @@
   :ensure t)
 
 (use-package smartparens
-  :config 
+  :ensure t
+  :config
   (smartparens-global-mode)
   (show-smartparens-global-mode t)
   :bind (("C-]" . sp-select-next-thing-exchange)
@@ -284,7 +283,7 @@
          ("C-M-u" . sp-up-sexp)
          ("C-M-d" . sp-down-sexp)))
 
-(use-package smartparens-config 
+(use-package smartparens-config
   :ensure smartparens)
 
 (use-package company        
@@ -302,11 +301,11 @@
   :diminish projectile-mode
   :chords (("pp" . projectile-switch-project)
           ("pf" . projectile-find-file))
+  :bind-keymap ("C-c p" . projectile-command-map)
   :custom ((projectile-enable-caching t)
-           (projectile-keymap-prefix (kbd "C-c p"))
            (projectile-completion-system 'ivy))
-  :config 
-  (projectile-global-mode t)
+  :config
+  (projectile-mode t)
   (setq frame-title-format '((:eval (projectile-project-name)))))
 
 (use-package counsel-projectile
@@ -318,16 +317,13 @@
   :ensure t
   :init (global-flycheck-mode))
 
-(use-package flycheck-color-mode-line
-  :ensure t)
-
 (use-package yasnippet
-  :ensure t)
-(yas-global-mode 1)
-(define-key yas-minor-mode-map (kbd "C-c y") yas-maybe-expand)
+  :ensure t
+  :config
+  (yas-global-mode 1)
+  (define-key yas-minor-mode-map (kbd "C-c y") yas-maybe-expand))
 
 (use-package ruby-mode
-  :ensure t
   :custom ((ruby-insert-encoding-magic-comment nil))
   :config
   (add-hook 'ruby-mode-hook 'subword-mode))

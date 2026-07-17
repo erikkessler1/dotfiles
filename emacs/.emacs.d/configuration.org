@@ -66,7 +66,7 @@ Make things a little quieter.
 #+BEGIN_SRC emacs-lisp
   (setq inhibit-startup-message t)
   (setq initial-scratch-message nil)
-  (fset 'yes-or-no-p 'y-or-n-p)
+  (setq use-short-answers t)
 #+END_SRC
 
 *** Quitting Emacs
@@ -76,13 +76,15 @@ Make sure we want to quit.
 #+END_SRC
 
 *** Paths
-Include user binaries.
+Include user binaries. Note: ~/opt/homebrew/bin~ is also set earlier during
+package management setup so ~use-package-ensure-system-package~ can find ~brew~.
 #+BEGIN_SRC emacs-lisp
-  (setenv "PATH" (concat (getenv "PATH") ":/usr/local/bin"))
-  (setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/bin"))
-  (setenv "PATH" (concat (getenv "PATH") ":/Users/ekessler/.salsify/bin"))
-  (setq exec-path (append exec-path '("/usr/local/bin")))
-  (setq exec-path (append exec-path '("/opt/homebrew/bin")))
+  (dolist (dir '("/usr/local/bin"
+                 "/opt/homebrew/bin"
+                 "/Users/ekessler/bin"
+                 "/Users/ekessler/.salsify/bin"))
+    (setenv "PATH" (concat (getenv "PATH") ":" dir))
+    (add-to-list 'exec-path dir))
 #+END_SRC
 
 Load the ~resources~ directory.
@@ -318,15 +320,6 @@ Fuzzy matching for Emacs ... a la Sublime Text.
     (use-package flx
       :ensure t)
 #+END_SRC
-*** [[https://github.com/nonsequitur/smex][smex]]
-#+BEGIN_SRC quote
-A smart M-x enhancement for Emacs.
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (use-package smex
-    :ensure t)
-#+END_SRC
 ** Selection
 
 *** [[https://github.com/magnars/expand-region.el][expand-region]]
@@ -391,14 +384,14 @@ A front-end for ag ('the silver searcher')
 
 #+BEGIN_SRC emacs-lisp
   (defun ek-copy-rspec-name ()
-    "Copy the current filename to the clipboard"
+    "Copy an rspec command for the current file and line to the clipboard."
     (interactive)
     (let ((filename (if (equal major-mode 'dired-mode)
                         default-directory
                       (buffer-file-name))))
       (when filename
         (kill-new (format "be rspec %s:%d" filename (line-number-at-pos)))
-        (message "Copied buffer file name '%s' to the clipboard." filename))))
+        (message "Copied rspec command for '%s' to the clipboard." filename))))
 #+END_SRC
 
 ** Windows
@@ -415,7 +408,7 @@ Quickly switch windows.
     :chords (" o" . ace-window)
     :custom
     (aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l))
-    (aw-scope'frame))
+    (aw-scope 'frame))
 #+END_SRC
 
 ** Modeline
@@ -537,7 +530,8 @@ Smartparens is a minor mode for dealing with pairs in Emacs.
 
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
-    :config 
+    :ensure t
+    :config
     (smartparens-global-mode)
     (show-smartparens-global-mode t)
     :bind (("C-]" . sp-select-next-thing-exchange)
@@ -545,7 +539,7 @@ Smartparens is a minor mode for dealing with pairs in Emacs.
            ("C-M-u" . sp-up-sexp)
            ("C-M-d" . sp-down-sexp)))
 
-  (use-package smartparens-config 
+  (use-package smartparens-config
     :ensure smartparens)
 #+END_SRC
 
@@ -580,11 +574,11 @@ Manage and navigate projects in Emacs easily
     :diminish projectile-mode
     :chords (("pp" . projectile-switch-project)
             ("pf" . projectile-find-file))
+    :bind-keymap ("C-c p" . projectile-command-map)
     :custom ((projectile-enable-caching t)
-             (projectile-keymap-prefix (kbd "C-c p"))
              (projectile-completion-system 'ivy))
-    :config 
-    (projectile-global-mode t)
+    :config
+    (projectile-mode t)
     (setq frame-title-format '((:eval (projectile-project-name)))))
 
   (use-package counsel-projectile
@@ -602,9 +596,6 @@ On-the-fly syntax checking
   (use-package flycheck
     :ensure t
     :init (global-flycheck-mode))
-
-  (use-package flycheck-color-mode-line
-    :ensure t)
 #+END_SRC
 
 ** Templating
@@ -616,9 +607,10 @@ A template system for Emacs
 
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
-    :ensure t)
-  (yas-global-mode 1)
-  (define-key yas-minor-mode-map (kbd "C-c y") yas-maybe-expand)
+    :ensure t
+    :config
+    (yas-global-mode 1)
+    (define-key yas-minor-mode-map (kbd "C-c y") yas-maybe-expand))
 #+END_SRC
 * Languages and Frameworks
 
@@ -627,7 +619,6 @@ A template system for Emacs
 *** General
 #+BEGIN_SRC emacs-lisp
   (use-package ruby-mode
-    :ensure t
     :custom ((ruby-insert-encoding-magic-comment nil))
     :config
     (add-hook 'ruby-mode-hook 'subword-mode))
@@ -825,7 +816,7 @@ Emacs on the fly markdown preview
     :ensure t)
 #+END_SRC
 
-*** JSON
+** JSON
 
 *** General
 #+BEGIN_SRC emacs-lisp
