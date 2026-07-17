@@ -1,69 +1,23 @@
 ;;; -*- lexical-binding: t -*-
 
-(setq gc-cons-threshold 50000000)
 (setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024))
 
-(add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/")
-             '("marmalade" . "http://marmalade-repo.org/packages/"))
 (require 'package)
-(unless (package-installed-p 'use-package) 
-  (package-refresh-contents) 
+(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+(unless (package-installed-p 'use-package)
+  (package-refresh-contents)
   (package-install 'use-package))
 (eval-when-compile (require 'use-package))
 
 (use-package diminish
   :ensure t)
 
-;; Taken from: https://github.com/waymondo/use-package-ensure-system-package/blob/884df1a335d79d07578f5b6dc070570fcbd23ac6/use-package-ensure-system-package.el
-(use-package system-packages :ensure t)
 (setenv "PATH" (concat (getenv "PATH") ":/opt/homebrew/bin"))
-(setq system-packages-package-manager 'brew)
-
-(add-to-list 'use-package-keywords :ensure-system-package t)
-
-(defun use-package-ensure-system-package-install-command (pack)
-  "Return the default install command for `pack'."
-  (let ((command
-         (cdr (assoc 'install (cdr (assoc system-packages-packagemanager
-                                          system-packages-supported-package-managers))))))
-    (unless command
-      (error (format "%S not supported in %S" 'install system-packages-packagemanager)))
-    (unless (listp command)
-      (setq command (list command)))
-    (when system-packages-usesudo
-      (setq command (mapcar (lambda (part) (concat "sudo " part)) command)))
-    (setq command (mapconcat 'identity command " && "))
-    (mapconcat 'identity (list command pack) " ")))
-
-(defun use-package-ensure-system-package-consify (arg)
-  "Turn `arg' into a cons of (`package-name' . `install-command')."
-  (cond
-   ((stringp arg)
-    (cons arg (use-package-ensure-system-package-install-command arg)))
-   ((symbolp arg)
-    (cons arg (use-package-ensure-system-package-install-command (symbol-name arg))))
-   ((consp arg) arg)))
-
-(defun use-package-normalize/:ensure-system-package (name-symbol keyword args)
-  "Turn `arg' into a list of cons-es of (`package-name' . `install-command')."
-  (use-package-only-one (symbol-name keyword) args
-    (lambda (label arg)
-      (cond
-       ((and (listp arg) (listp (cdr arg)))
-        (mapcar #'use-package-ensure-system-package-consify arg))
-       (t
-        (list (use-package-ensure-system-package-consify arg)))))))
-
-(defun use-package-handler/:ensure-system-package (name keyword arg rest state)
-  "Execute the handler for `:ensure-system-package' keyword in `use-package'."
-  (let ((body (use-package-process-keywords name rest state)))
-    (use-package-concat
-     (mapcar #'(lambda (cons)
-                 `(unless (executable-find (symbol-name ',(car cons)))
-                   (async-shell-command ,(cdr cons)))) arg)
-     body)))
+(use-package system-packages
+  :ensure t
+  :custom (system-packages-package-manager 'brew))
+(use-package use-package-ensure-system-package :ensure t)
 
 (use-package use-package-chords
   :ensure t
@@ -261,7 +215,8 @@
 
 (setq org-src-fontify-natively t)
 (setq org-src-tab-acts-natively t)
-(define-key org-mode-map (kbd "C-c .") 'org-time-stamp-inactive)
+(with-eval-after-load 'org
+  (define-key org-mode-map (kbd "C-c .") 'org-time-stamp-inactive))
 
 (use-package magit
   :ensure t
@@ -281,7 +236,7 @@
          (command (string-join (list "pushing_message" (car (last refs)) (car refs)) " ")))
     (progn
       (kill-new (shell-command-to-string command))
-      (message "Copied message!" command))))
+      (message "Copied message! (%s)" command))))
 
 (defun ek-magit-reset-to-master ()
   (interactive)
@@ -378,7 +333,7 @@
   (add-hook 'ruby-mode-hook 'subword-mode))
 
 (require 'chruby)
-(chruby "2.6.5")
+(chruby "3.4.8")
 (add-hook 'projectile-after-switch-project-hook 'chruby-use-corresponding)
 
 (use-package rubocop
@@ -405,9 +360,8 @@
 
 (use-package rspec-mode
   :ensure t
-  :init 
-  (add-hook 'ruby-mode-hook 'rspec-mode)
-  (add-hook 'projectile-rails-mode 'rspec-mode))
+  :init
+  (add-hook 'ruby-mode-hook 'rspec-mode))
 
 (use-package projectile-rails
   :ensure t

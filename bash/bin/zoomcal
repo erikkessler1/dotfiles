@@ -15,6 +15,7 @@ gemfile do
   source 'https://rubygems.org'
   gem 'google-api-client'
   gem 'pstore'
+  gem 'multi_json'
 end
 
 require 'google/apis/calendar_v3'
