@@ -127,7 +127,8 @@
 (key-chord-define-global "j1" (lambda () (interactive) (jump-to-register ?1)))
 
 (use-package ivy
-  :after counsel
+  :ensure t
+  :demand t
   :diminish
   :bind (("C-c Cr" . ivy-resume)
          ("C-x B" . ivy-switch-buffer-other-window))
@@ -143,12 +144,15 @@
 
 (use-package counsel
   :ensure t
+  :after ivy
+  :demand t
   :diminish
   :chords ("xx" . counsel-M-x)
   :config (counsel-mode t))
 
 (use-package swiper
-  :after counsel
+  :ensure t
+  :after ivy
   :bind (("C-s" . swiper)))
 
 (use-package flx
@@ -158,9 +162,13 @@
   :ensure t
   :bind ("C-=" . er/expand-region))
 
-(use-package ag 
+(use-package deadgrep
   :ensure t
-  :ensure-system-package ag)
+  :ensure-system-package (rg . ripgrep)
+  :bind (("C-c s" . deadgrep)))
+
+(with-eval-after-load 'counsel-projectile
+  (define-key projectile-command-map (kbd "s s") #'counsel-projectile-rg))
 
 (setq-default dired-listing-switches "-alh")
 
@@ -220,6 +228,8 @@
   :ensure t
   :bind ("C-x g" . magit-status)
   :chords (("bb" . magit-blame-addition))
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
   :config
   (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
   (transient-append-suffix 'magit-branch "l"

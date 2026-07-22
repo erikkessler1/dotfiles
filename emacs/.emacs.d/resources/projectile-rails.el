@@ -1,4 +1,4 @@
-;;; projectile-rails.el --- Minor mode for Rails projects based on projectile-mode
+;;; projectile-rails.el --- Minor mode for Rails projects based on projectile-mode  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2013 Adam Sokolnicki
 

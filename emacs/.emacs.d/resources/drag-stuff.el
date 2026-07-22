@@ -1,4 +1,4 @@
-;;; drag-stuff.el --- Drag stuff (lines, words, region, etc...) around
+;;; drag-stuff.el --- Drag stuff (lines, words, region, etc...) around  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2010-2016 Johan Andersson
 

@@ -286,7 +286,8 @@ Swiper, an Ivy-enhanced alternative to isearch.
 
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
-    :after counsel
+    :ensure t
+    :demand t
     :diminish
     :bind (("C-c Cr" . ivy-resume)
            ("C-x B" . ivy-switch-buffer-other-window))
@@ -302,12 +303,15 @@ Swiper, an Ivy-enhanced alternative to isearch.
 
   (use-package counsel
     :ensure t
+    :after ivy
+    :demand t
     :diminish
     :chords ("xx" . counsel-M-x)
     :config (counsel-mode t))
 
   (use-package swiper
-    :after counsel
+    :ensure t
+    :after ivy
     :bind (("C-s" . swiper)))
 #+END_SRC
 
@@ -334,15 +338,25 @@ Emacs extension to increase selected region by semantic units.
 #+END_SRC
 ** Searching
 
-*** [[https://github.com/Wilfred/ag.el][ag]]
+*** [[https://github.com/Wilfred/deadgrep][deadgrep]]
 #+BEGIN_QUOTE
-A front-end for ag ('the silver searcher')
+A front-end for ripgrep. Results open in a dedicated, navigable buffer,
+which stays responsive on large result sets.
 #+END_QUOTE
 
 #+BEGIN_SRC emacs-lisp
-    (use-package ag 
-      :ensure t
-      :ensure-system-package ag)
+  (use-package deadgrep
+    :ensure t
+    :ensure-system-package (rg . ripgrep)
+    :bind (("C-c s" . deadgrep)))
+#+END_SRC
+
+Rebind projectile's default search (=C-c p s s=) to =counsel-projectile-rg=
+so incremental in-minibuffer search uses ripgrep instead of ag.
+
+#+BEGIN_SRC emacs-lisp
+  (with-eval-after-load 'counsel-projectile
+    (define-key projectile-command-map (kbd "s s") #'counsel-projectile-rg))
 #+END_SRC
 * Buffers & files
 
@@ -453,6 +467,8 @@ A Git porcelain inside Emacs
     :ensure t
     :bind ("C-x g" . magit-status)
     :chords (("bb" . magit-blame-addition))
+    :custom
+    (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1)
     :config
     (add-hook 'git-commit-mode-hook 'turn-on-flyspell)
     (transient-append-suffix 'magit-branch "l"

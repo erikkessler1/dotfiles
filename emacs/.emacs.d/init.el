@@ -22,7 +22,6 @@
      "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e"
      "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a"
      default))
- '(helm-mode t)
  '(indent-tabs-mode nil)
  '(js-indent-level 2)
  '(js2-strict-missing-semi-warning nil)
@@ -32,15 +31,7 @@
  '(nrepl-message-colors
    '("#CC9393" "#DFAF8F" "#F0DFAF" "#7F9F7F" "#BFEBBF" "#93E0E3"
      "#94BFF3" "#DC8CC3"))
- '(package-selected-packages
-   '(ace-window ag aggressive-indent clojure-mode company compat
-                counsel-projectile diff-hl diminish doom-modeline
-                expand-region flx flycheck-color-mode-line flymd
-                git-commit go-mode graphql-mode json-mode kele magit
-                nerd-icons projectile-rails rspec-mode rubocop
-                smartparens smex transient use-package-chords
-                use-package-ensure-system-package web-mode xref-js2
-                yaml-mode yasnippet zenburn-theme))
+ '(package-selected-packages nil)
  '(pdf-view-midnight-colors '("#DCDCCC" . "#383838"))
  '(standard-indent 2))
 (custom-set-faces

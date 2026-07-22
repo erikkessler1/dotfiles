@@ -1,4 +1,4 @@
-;;; chruby.el --- Emacs integration for chruby
+;;; chruby.el --- Emacs integration for chruby  -*- lexical-binding: t -*-
 
 ;; Copyright (C) 2013 Arne Brasseur
 
