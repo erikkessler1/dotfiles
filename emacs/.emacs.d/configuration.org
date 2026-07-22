@@ -274,6 +274,37 @@ Tree-based completion.
 #+END_SRC
 ** Completion
 
+*** [[https://github.com/oantolin/orderless][orderless]]
+#+BEGIN_QUOTE
+Space-separated, order-independent completion matching. Type =conf ruby=
+to match both =configure-ruby= and =ruby-configuration=.
+#+END_QUOTE
+
+Loaded before Ivy so the =orderless-ivy-re-builder= symbol is bound when
+Ivy first invokes it. Also sets =completion-styles= so any built-in
+=completing-read= caller (e.g. =describe-variable=) picks it up too.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package orderless
+    :ensure t
+    :demand t
+    :custom
+    (completion-styles '(orderless basic))
+    (completion-category-overrides '((file (styles basic partial-completion)))))
+#+END_SRC
+
+*** [[https://github.com/minad/marginalia][marginalia]]
+#+BEGIN_QUOTE
+Annotations in the completion margin — docstrings for =M-x=, file sizes
+for =find-file=, major modes for buffer switching, etc.
+#+END_QUOTE
+
+#+BEGIN_SRC emacs-lisp
+  (use-package marginalia
+    :ensure t
+    :init (marginalia-mode))
+#+END_SRC
+
 *** [[https://github.com/abo-abo/swiper][ivy, counsel, & swiper]]
 #+BEGIN_QUOTE
 Ivy, a generic completion mechanism for Emacs.
@@ -299,7 +330,7 @@ Swiper, an Ivy-enhanced alternative to isearch.
     (setq ivy-re-builders-alist
           '((swiper . ivy--regex-plus)
             (projectile-find-file . ivy--regex-fuzzy)
-            (t . ivy--regex-plus))))
+            (t . orderless-ivy-re-builder))))
 
   (use-package counsel
     :ensure t

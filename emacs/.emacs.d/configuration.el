@@ -126,6 +126,17 @@
 (key-chord-define-global "k1" (lambda () (interactive) (point-to-register ?1)))
 (key-chord-define-global "j1" (lambda () (interactive) (jump-to-register ?1)))
 
+(use-package orderless
+  :ensure t
+  :demand t
+  :custom
+  (completion-styles '(orderless basic))
+  (completion-category-overrides '((file (styles basic partial-completion)))))
+
+(use-package marginalia
+  :ensure t
+  :init (marginalia-mode))
+
 (use-package ivy
   :ensure t
   :demand t
@@ -140,7 +151,7 @@
   (setq ivy-re-builders-alist
         '((swiper . ivy--regex-plus)
           (projectile-find-file . ivy--regex-fuzzy)
-          (t . ivy--regex-plus))))
+          (t . orderless-ivy-re-builder))))
 
 (use-package counsel
   :ensure t

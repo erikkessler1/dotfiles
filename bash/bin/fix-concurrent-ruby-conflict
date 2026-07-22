@@ -1,0 +1,23 @@
+#!/usr/bin/env bash
+# Fix Gem::ConflictError between concurrent-ruby and concurrent-ruby-ext.
+# The C-extension gem (concurrent-ruby-ext) pins an exact version of
+# concurrent-ruby; when the two drift apart, activation fails. This installs
+# a matching concurrent-ruby-ext for every installed concurrent-ruby version.
+
+set -euo pipefail
+
+versions=$(gem list '^concurrent-ruby$' | sed -n 's/^concurrent-ruby (\(.*\))$/\1/p' | tr ',' '\n' | tr -d ' ')
+
+if [ -z "$versions" ]; then
+  echo "No concurrent-ruby gems installed."
+  exit 0
+fi
+
+for v in $versions; do
+  if gem list -i '^concurrent-ruby-ext$' -v "$v" >/dev/null 2>&1; then
+    echo "concurrent-ruby-ext $v already installed."
+  else
+    echo "Installing concurrent-ruby-ext $v to match concurrent-ruby $v..."
+    gem install concurrent-ruby-ext -v "$v"
+  fi
+done
